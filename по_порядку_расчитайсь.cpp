@@ -1,3 +1,5 @@
+// То как на Си должна выглядеть наша программа
+
 #include <stdio.h>
 
 int CatchSpy(int spy_pos)
