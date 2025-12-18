@@ -1,0 +1,36 @@
+Как выглядит на Си:
+
+#include <stdio.h>
+
+int CatchSpy(int spy_pos)
+{
+    int rota = 120;
+    int people_number_in_line = 10;
+
+    int spy_line = rota / people_number_in_line;
+
+    printf("Хватай шпиона! Он в шеренге  номер %d\n", spy_line);
+
+    return 0;
+}
+
+int main()
+{
+    int spy_position = 52;
+
+    int cur_solder = 1;
+    while(cur_solder <= rota)
+    {
+        if(cur_solder == spy_pos)
+        {
+            printf(". . . .\n");
+            CatchSpy(spy_pos);
+        }
+        if(cur_solder != spy_pos)
+        {
+            printf("%d\n", cur_solder);
+        }
+    }
+
+    return 0;
+}
