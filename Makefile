@@ -32,7 +32,7 @@ endif
 all: front_end
 
 front_end: ObjectFiles/ArmyFrontEnd.o ObjectFiles/Instruments.o ObjectFiles/my_stack.o
-	@ g++ $(FLAGS) $(MODE) ObjectFiles/ArmyFrontEnd.o ObjectFiles/Instruments.o ObjectFiles/my_stack.o
+	@ g++ $(FLAGS) $(MODE) ObjectFiles/ArmyFrontEnd.o ObjectFiles/Instruments.o ObjectFiles/my_stack.o -o front_end
 
 ObjectFiles/ArmyFrontEnd.o: ArmyFrontEnd.cpp ArmyFrontEnd.h StackMemStruct/my_stack.h Instruments.h
 	@ g++ $(FLAGS) $(MODE) -c ArmyFrontEnd.cpp -o ObjectFiles/ArmyFrontEnd.o

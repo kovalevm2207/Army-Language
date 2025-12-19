@@ -8,8 +8,7 @@
 #include <sys/stat.h>
 #include <math.h>
 
-#include "color_print.h"
-#include "TreeMemStruct/Tree.h"
+#include "StackMemStruct/color_print.h"
 
 #ifdef DEBUG
     #define ON_DEBUG(func) func
@@ -23,7 +22,7 @@
 const double PRECISION = 1e-12;
 const size_t ST_W_LEN = 5;
 
-const char* ReadFile(const int argc, const char* const argv[]);
+char* ReadFile(const int argc, const char* const argv[]);
 char* SkipSpaces(char* ptr);
 void HelpUser(void);
 

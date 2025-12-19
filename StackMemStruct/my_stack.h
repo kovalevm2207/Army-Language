@@ -1,5 +1,5 @@
-#ifndef MY_STACK
-#define MY_STACK
+#ifndef ARMY_LANGUAGE_STACK
+#define ARMY_LANGUAGE_STACK
 
 #include <cstdlib>
 #include <stdint.h>
@@ -8,12 +8,33 @@
 
 #include "color_print.h"
 
-typedef const char* stack_t;
+typedef enum
+{
+    OP,
+    NUM,
+    WORD
+} TokenType_t;
+
+typedef union
+{
+    const char* op;
+    int   num;
+    const char* word;
+} TokenData_t;
+
+typedef struct
+{
+    const char* ptr;
+    TokenType_t type;
+    TokenData_t data;
+} Token_t;
+
+typedef Token_t* stack_t;
 
 const int MAXSIZE = 1e9; // or todo 1e9
-inline const char* L_STACK_CANARY = "BADDED";
-inline const char* R_STACK_CANARY = "DEDBAD";
-inline const char* STACK_POISON = "ABCCBA";
+const int L_STACK_CANARY = 0xBADDED;
+const int R_STACK_CANARY = 0xDEDBAD;
+const int STACK_POISON = 0xABCCBA;
 
 typedef enum
 {
@@ -52,9 +73,6 @@ StackErr_t StackDtor_(stack_s* stk, const char* file, int line);
 StackErr_t StackVerify(stack_s* stk, int STATUS); // todo rename (add Stack)
 StackErr_t StackDump(stack_s* stk);
 StackErr_t print_data(stack_s* stk);
-void do_RCanaryErr(stack_s* stk);
-void do_LCanaryErr(stack_s* stk);
-
 
 #define START_OK                                                                                    \
     if (capacity > MAXSIZE) STATUS |= BAD_START_CAPACITY;                                           \
@@ -87,4 +105,4 @@ void do_LCanaryErr(stack_s* stk);
     }                                                                                               \
     stk->STATUS = STATUS;
 
-#endif // MY_STACK
+#endif//ARMY_LANGUAGE_STACK

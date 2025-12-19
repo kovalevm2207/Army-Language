@@ -4,12 +4,12 @@ char* ReadFile(const int argc, const char* const argv[])
 {
     assert(argv != NULL && "NULL ARGV");
 
-    const char* file = NULL;
+    const char* name = NULL;
     if(argc != 2)
     {
         HelpUser();
-        file = "лови шпиона.army";
-    }else file = argv[1];
+        name = "лови шпиона.army";
+    }else name = argv[1];
 
 
     FILE* file = fopen(name, "r");
@@ -19,10 +19,10 @@ char* ReadFile(const int argc, const char* const argv[])
     stat(name, &file_info);
     size_t file_size = (size_t) file_info.st_size;
 
-    const char* buffer = (const char*) calloc(file_size + 1, sizeof(const char));
+    char* buffer = (char*) calloc(file_size + 1, sizeof(char));
     if (buffer == NULL) {fclose(file); file = NULL; return NULL;}
 
-    size_t ret = fread(buffer, sizeof(const char), file_size, file);
+    size_t ret = fread(buffer, sizeof(char), file_size, file);
     if (ret != file_size)
     {
         fclose(file);
@@ -37,11 +37,11 @@ char* ReadFile(const int argc, const char* const argv[])
 
     return buffer;
 }
-const char* SkipSpaces(const char* ptr)
+char* SkipSpaces(char* ptr)
 {
     assert(ptr != NULL && "NUUL ptr for SkipSpaces func");
 
-    while(*ptr && isspace((const unsigned char) *ptr))
+    while(*ptr && isspace((unsigned char) *ptr))
     {
         ptr++;
     }

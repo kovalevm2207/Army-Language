@@ -8,9 +8,9 @@ StackErr_t StackCtor_(stack_s* stk, size_t capacity, const char* file, int line)
     stk->data = (stack_t*) calloc(capacity  + 2, sizeof(stack_t));
     stk->size = 1;
     stk->capacity = capacity;
-    stk->data[0] = L_STACK_CANARY;
-    stk->data[capacity + 1] = R_STACK_CANARY;
-    for (size_t i = 1; i < capacity + 1; i++) stk->data[i] = STACK_POISON;
+    stk->data[0]->data.num = L_STACK_CANARY;
+    stk->data[capacity + 1]->data.num = R_STACK_CANARY;
+    for (size_t i = 1; i < capacity + 1; i++) stk->data[i]->data.num = STACK_POISON;
 
     STACK_OK
 
@@ -31,7 +31,7 @@ StackErr_t StackPush_(stack_s* stk, stack_t value, const char* file, int line)
         stk->data = new_data;
         memset(new_data + capacity, 0, sizeof(stack_t) * capacity);
         stk->capacity *= 2;
-        stk->data[stk->capacity + 1] = R_STACK_CANARY;
+        stk->data[stk->capacity + 1]->data.num = R_STACK_CANARY;
     }
 
     stk->data[stk->size] = value;
@@ -50,7 +50,7 @@ StackErr_t StackPop_(stack_s* stk, stack_t* value, const char* file, int line)
 
     stk->size--;
     *value = stk->data[stk->size];
-    stk->data[stk->size] = STACK_POISON;
+    stk->data[stk->size]->data.num = STACK_POISON;
 
     STACK_OK
 
@@ -82,8 +82,8 @@ StackErr_t StackVerify(stack_s* stk, int STATUS) // todo add poisons
     if (stk->size < 1)                            STATUS |= BAD_SIZE_L;
     if (stk->data == NULL)                        STATUS |= BAD_DATA_PTR;
     else {
-        if (stk->data[0] != L_STACK_CANARY)                 STATUS |= LEFT_CANARY_DEAD;
-        if (stk->data[stk->capacity + 1] != R_STACK_CANARY) STATUS |= RIGHT_CANARY_DEAD;
+        if (stk->data[0]->data.num != L_STACK_CANARY)                 STATUS |= LEFT_CANARY_DEAD;
+        if (stk->data[stk->capacity + 1]->data.num != R_STACK_CANARY) STATUS |= RIGHT_CANARY_DEAD;
     }
     return (StackErr_t) STATUS;
 }
@@ -119,7 +119,7 @@ StackErr_t StackDump(stack_s* stk)
 StackErr_t print_data(stack_s* stk)
 {
     if (stk == NULL) {
-        printf(CHANGE_ON RED TEXT_COLOR "BAD_PRINT_DATA(%d) " RESET, BAD_PRINT_DATA);
+        printf(RED_COLOR "BAD_PRINT_DATA(%d) " RESET, BAD_PRINT_DATA);
         return BAD_PRINT_DATA;
     }
 
@@ -127,18 +127,23 @@ StackErr_t print_data(stack_s* stk)
 
     printf(RESET "\n");
         printf("{\n");
-        printf(CHANGE_ON GREEN TEXT_COLOR "    size       " CHANGE_ON BLUE TEXT_COLOR  "%zu"  RESET "\n", stk->size - 1);
-        printf(CHANGE_ON GREEN TEXT_COLOR "    capacity   " CHANGE_ON BLUE TEXT_COLOR  "%zu" RESET "\n", stk->capacity);
-        printf(CHANGE_ON GREEN TEXT_COLOR "    data       " CHANGE_ON BLUE TEXT_COLOR  "[0x%lx]" RESET "\n", (uintptr_t)stk->data);
+        printf(GREEN_COLOR "    size       " BLUE_COLOR  "%zu"     RESET "\n", stk->size - 1);
+        printf(GREEN_COLOR "    capacity   " BLUE_COLOR  "%zu"     RESET "\n", stk->capacity);
+        printf(GREEN_COLOR "    data       " BLUE_COLOR  "[0x%lx]" RESET "\n", (uintptr_t)stk->data);
     if (!(STATUS & BAD_DATA_PTR || STATUS & BAD_STK_CAPACITY || STATUS & BAD_START_CAPACITY)) {
         printf("    {\n");
         for (size_t i = 0; i < stk->capacity + 2; i++) {
-            if (stk->data[i] == STACK_POISON)
-                printf(CHANGE_ON CYAN  TEXT_COLOR  "        [%zu] = %s,         (POISON)\n" RESET, i, stk->data[i]);
-            if (stk->data[i] == L_STACK_CANARY || stk->data[i] == R_STACK_CANARY)
-                printf(CHANGE_ON PURPLE TEXT_COLOR "        [%zu] = %s,         (CANARY)\n" RESET, i, stk->data[i]);
-            else if (stk->data[i] != STACK_POISON )
-                printf(CHANGE_ON YELLOW TEXT_COLOR "       *[%zu] = %8s,         (VALUE) \n" RESET, i, stk->data[i]);
+            if (stk->data[i]->data.num == STACK_POISON)
+                printf(CYAN_COLOR  "        [%zu] = %d,         (POISON)\n" RESET, i, stk->data[i]->data.num);
+            if (stk->data[i]->data.num == L_STACK_CANARY || stk->data[i]->data.num == R_STACK_CANARY)
+                printf(PURPLE_COLOR "        [%zu] = %d,         (CANARY)\n" RESET, i, stk->data[i]->data.num);
+            else if (stk->data[i]->data.num != STACK_POISON )
+            {
+                if(stk->data[i]->type == NUM)
+                    printf(ORANGE_COLOR "       *[%zu] = %d,         (VALUE) \n" RESET, i, stk->data[i]->data.num);
+                else
+                    printf(ORANGE_COLOR "       *[%zu] = %s,         (VALUE) \n" RESET, i, stk->data[i]->data.word);
+            }
         }
     printf("    }\n\n");
     }
