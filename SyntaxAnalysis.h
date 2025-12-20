@@ -1,8 +1,10 @@
 #ifndef ARMY_LANGUAGE_SYNTAX_ANALYSIS
 #define ARMY_LANGUAGE_SYNTAX_ANALYSIS
 
+
 #include "FrontEndTypes.h"
 #include "Instruments.h"
+#include "TreeMemStruct/Tree.h"
 
 const int ST_LEXEME_NUM = 128;
 

@@ -1,0 +1,129 @@
+#ifndef TREE_BASE
+#define TREE_BASE
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include <string.h>
+
+#include "color_print.h"
+#include "../a.out.h"
+
+/*
+const struct
+{
+    const char* name;
+    const char* symbol;
+    int         priority;
+} Operators[] =
+{
+    {"ADD",    "+" ,    0},
+    {"SUB",    "-" ,    1},
+    {"MUL",    "*" ,    2},
+    {"DIV",    "/" ,    2},
+    {"POW",    "^" ,    2},
+    {"SQRT",   "sqrt",  3},
+    {"SIN",    "sin",   3},
+    {"COS",    "cos",   3},
+    {"TG",     "tan",   3},
+    {"CTG",    "ctan",  3},
+    {"SH",     "sinh",  3},
+    {"CH",     "cosh",  3},
+    {"TH",     "tanh",  3},
+    {"CTH",    "ctanh", 3},
+    {"ARCSIN", "asin",  3},
+    {"ARCCOS", "acos",  3},
+    {"ARCTG",  "atan",  3},
+    {"ARCCTG", "actan", 3},
+    {"LOG",    "log",   3},
+    {"LG",     "lg",    3},
+    {"LN",     "ln",    3},
+};*/
+
+
+typedef struct Node_t Node_t;
+
+typedef struct Node_t
+{
+    Node_t**    prev_node;
+    NodeType_t       type;
+    NodeData_t       data;
+    Node_t*          left;
+    Node_t*         right;
+} Node_t;
+
+const size_t START_VARS_NUM = 4;
+
+typedef struct
+{
+    const char*  name;
+    double data;
+} Var_t;
+
+typedef struct
+{
+    Node_t* root;
+    size_t  size;
+    size_t  depth;
+    size_t  max_vars_num;
+    size_t  vars_num;
+    Var_t*  vars;
+} Tree_t;
+
+
+typedef enum
+{
+    TREE_OK                 = 1 << 0,
+    CALLLOC_ERR             = 1 << 1,
+    TREE_ERR_NODE_NOT_EMPTY = 1 << 2,
+    NULL_FILE               = 1 << 3,
+    END_FILE_ERR            = 1 << 4,
+    TREE_ERR_DUPLICATE_NODE = 1 << 5,
+    NULL_NODE               = 1 << 6,
+    INVALID_MODE            = 1 << 7,
+    INCORRECT_TYPE          = 1 << 8
+} TreeErr_t;
+
+typedef enum
+{
+    PREORDER  = 0,
+    INORDER   = 1,
+    POSTORDER = 2
+} TraverseMode_t;
+
+typedef struct
+{
+    NodeType_t type;
+    Value_t value;
+} data_t;
+
+typedef struct
+{
+    double left_border;
+    double right_border;
+} Scale_t;
+
+typedef struct
+{
+    Tree_t* user_tree;
+    size_t taylor_order;
+    double expansion_dot;
+    Scale_t x;
+    Scale_t y;
+} ProgramData_t;
+
+#ifdef DEBUG
+    #define ON_DEBUG(func) func
+    #define DEBUG_OFF(func)
+    #define CHECK_PTR(param, name) if (param == NULL)        \
+                                   {                         \
+                                       return NULL_##name;   \
+                                   }
+#else
+    #define ON_DEBUG(func)
+    #define DEBUG_OFF(func) func
+    #define CHECK_PTR(param, name)
+#endif // DEBUG
+
+
+#endif // TREE_BASE

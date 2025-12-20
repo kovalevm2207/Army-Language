@@ -154,21 +154,12 @@ const size_t FUNCTIONS_NUM = sizeof(Functions)/sizeof(Functions[0]);
 
 typedef enum
 {
-    OP,
-    VAR,
     NUM,
+    VAR,
+    OP,
     FUNC
 } NodeType_t;
 
-typedef struct Node_t Node_t;
-
-typedef struct Node_t
-{
-    Node_t**    prev_node;
-    NodeType_t       type;
-    NodeData_t       data;
-    Node_t*          left;
-    Node_t*         right;
-} Node_t;
+const char* const NodeTypes[] = {"NUM", "VAR", "OP", "FUNC"};
 
 #endif//FRONTENDTYPES
