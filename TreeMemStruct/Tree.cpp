@@ -9,7 +9,7 @@ Tree_t* TreeCtor(Node_t* root)
     assert(vars);
     tree->vars_num = 0;
     tree->max_vars_num = START_VARS_NUM;
-    GetTreeVars(&vars, root, &tree->vars_num, &tree->max_vars_num);
+    // GetTreeVars(&vars, root, &tree->vars_num, &tree->max_vars_num);
     assert(vars);
 
     tree->vars = vars;
@@ -57,16 +57,16 @@ TreeErr_t MakePrevNode(Node_t* node)
 
     return TREE_OK;
 }
-size_t GetTreeVars(Var_t** vars, const Node_t* const node, size_t* cur_vars_num, size_t* max_vars_num)
+/*size_t GetTreeVars(Var_t** vars, const Node_t* const node, size_t* cur_vars_num, size_t* max_vars_num)
 {
     assert(vars);
     assert(*vars);
     assert(node);
     assert(max_vars_num);
 
-    if(node->node_type == VAR)
+    if(node->type == VAR)
     {
-        if(!FindVar(node->value.var, *vars, *cur_vars_num))
+        if(!FindVar(node->data.var, *vars, *cur_vars_num))
         {
             if(*cur_vars_num == *max_vars_num)
             {
@@ -76,14 +76,14 @@ size_t GetTreeVars(Var_t** vars, const Node_t* const node, size_t* cur_vars_num,
                 *vars = new_vars;
                 *max_vars_num *= 2;
             }
-            (*vars)[(*cur_vars_num)++].name = node->value.var;
+            (*vars)[(*cur_vars_num)++].name = node->data.var;
         }
     }
     if(node->left)  GetTreeVars(vars, node->left,  cur_vars_num, max_vars_num);
     if(node->right) GetTreeVars(vars, node->right, cur_vars_num, max_vars_num);
 
     return *cur_vars_num;
-}
+}*/
 bool FindVar(const char* const var, const Var_t* const vars, const size_t vars_num)
 {
     assert(var);
@@ -145,28 +145,13 @@ TreeErr_t TreeStructDumpF(FILE* stream, Tree_t* tree)
     return TREE_OK;
 }
 
-
-Node_t* TreeNodeCtor(data_t* data, Node_t* left_som, Node_t* right_som)
-{
-    assert(data && "NULL data, check GetWord or someone else func");
-    Value_t value = {};
-
-    switch(data->type)
-    {
-        case NUM: value.num = data->value.num; break;
-        case VAR: value.var = data->value.var; break;
-        case OP:  value.op  = data->value.op;  break;
-        default: return NULL;
-    }
-    return TreeNodeCtor_(data->type, value, left_som, right_som);
-}
-Node_t* TreeNodeCtor_(NodeType_t type, Value_t value, Node_t* left_som, Node_t* right_som)
+Node_t* TreeNodeCtor(NodeType_t type, NodeData_t value, Node_t* left_som, Node_t* right_som)
 {
     Node_t* node = (Node_t*) calloc(1, sizeof(Node_t));
     if(node == NULL) return NULL;
 
-    node->node_type = type;
-    node->value = value;
+    node->type = type;
+    node->data = value;
     node->prev_node = NULL;
     node->left = left_som;
     node->right = right_som;
@@ -178,16 +163,7 @@ Node_t* TreeNodeCtor_(NodeType_t type, Value_t value, Node_t* left_som, Node_t* 
 }
 Node_t* DeepNodeCopy(Node_t* node)
 {
-    if(node)
-    {
-        Value_t value = node->value;
-        if(node->node_type == VAR)
-        {
-            value.var = strdup(value.var);
-        }
-        return TreeNodeCtor_(node->node_type, value, DeepNodeCopy(node->left), DeepNodeCopy(node->right));
-    }
-    return NULL;
+     return  (node) ? TreeNodeCtor(node->type, node->data, DeepNodeCopy(node->left), DeepNodeCopy(node->right)) : NULL;
 }
 TreeErr_t TreeInsertLeft(Node_t* base_node, Node_t* inserting_node)
 {
@@ -209,30 +185,6 @@ TreeErr_t TreeInsertRight(Node_t* base_node, Node_t* inserting_node)
 
     return TREE_OK;
 }
-TreeErr_t TreeSortInsert(Node_t* root, Node_t* node)
-{
-    assert(root != NULL);
-    assert(node != NULL);
-    assert(root->node_type == NUM);
-
-    while(1)
-    {
-        if(node->value.num <= root->value.num)
-        {
-            if (root->left == node) return TREE_ERR_DUPLICATE_NODE;
-            if (TreeInsertLeft(root, node) == TREE_OK) break;
-            else root = root->left;
-        }
-        else
-        {
-            if (root->right == node) return TREE_ERR_DUPLICATE_NODE;
-            if(TreeInsertRight(root, node) == TREE_OK) break;
-            else root = root->right;
-        }
-    }
-
-    return TREE_OK;
-}
 TreeErr_t DeleteTreeNode(Node_t** node)
 {
     assert(node != NULL);
@@ -243,17 +195,19 @@ TreeErr_t DeleteTreeNode(Node_t** node)
     if (cur_node->left)  DeleteTreeNode(&cur_node->left);
     if (cur_node->right) DeleteTreeNode(&cur_node->right);
 
-    switch(cur_node->node_type)
+    switch(cur_node->type)
     {
         case NUM:
-            cur_node->value.num = 0;
+            cur_node->data.num = 0;
             break;
         case VAR:
-            free(cur_node->value.var);
-            cur_node->value.var = NULL;
+            cur_node->data.var = 0;
             break;
         case OP:
-            cur_node->value.op = ADD;
+            cur_node->data.op = NOT_OP;
+            break;
+        case FUNC:
+            cur_node->data.func = 0;
             break;
         default:
             return INCORRECT_TYPE;
@@ -305,24 +259,19 @@ TreeErr_t PrintTreeData(FILE* stream, const Node_t* node)
     assert(stream != NULL);
     assert(node != NULL);
 
-    switch(node->node_type)
+    switch(node->type)
     {
-        case NUM:
-            fprintf(stream, " %f ", node->value.num);
-            break;
-        case OP:
-            fprintf(stream, " %d ", node->value.op);
-            break;
-        case VAR:
-            fprintf(stream, " %s ", node->value.var); // пока просто печатаем номер переменной, а не ее название
-            break;                                    // далее скорее всего будет массив с навзвниями...
+        case NUM:  fprintf(stream, " %d ", node->data.num                  ); break;
+        case OP:   fprintf(stream, " %s ", Operators[node->data.op].op_name); break;
+        case VAR:  fprintf(stream, " %s ", Vars[node->data.var]            ); break;
+        case FUNC: fprintf(stream, " %s ", Functions[node->data.func]      ); break;
         default:
             return INCORRECT_TYPE;
     }
 
     return TREE_OK;
 }
-TreeErr_t TreeDump_(FILE* tex_file, const Node_t* node, int count_img, const char* func, const char* file, int line)
+TreeErr_t TreeDump_(const Node_t* node, int count_img, const char* func, const char* file, int line)
 {
     ON_DEBUG(printf("node ptr = %p\n", node));
     if (node == NULL) return NULL_NODE;
@@ -335,7 +284,6 @@ TreeErr_t TreeDump_(FILE* tex_file, const Node_t* node, int count_img, const cha
     system(command);
 
     WriteInHtmlFile(node, count_img, func, file, line);
-    fprintf(tex_file, "\\includegraphics[width=0.7\\textwidth]{TreeMemStruct/pdf_dot/%ddump.pdf}\n\n", count_img);
 
     return TREE_OK;
 }

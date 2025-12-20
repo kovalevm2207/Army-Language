@@ -31,16 +31,23 @@ endif
 
 all: front_end
 
-front_end: ObjectFiles/ArmyFrontEnd.o ObjectFiles/Instruments.o ObjectFiles/my_stack.o \
-		   ObjectFiles/SyntaxAnalysis.o
-	@ g++ $(FLAGS) $(MODE) ObjectFiles/ArmyFrontEnd.o ObjectFiles/Instruments.o ObjectFiles/my_stack.o \
-						   ObjectFiles/SyntaxAnalysis.o -o front_end
+front_end: ObjectFiles/ArmyFrontEnd.o   ObjectFiles/Instruments.o ObjectFiles/my_stack.o \
+		   ObjectFiles/SyntaxAnalysis.o ObjectFiles/Tree.o        ObjectFiles/TreeDump.o
+	@ g++ $(FLAGS) $(MODE) ObjectFiles/ArmyFrontEnd.o   ObjectFiles/Instruments.o ObjectFiles/my_stack.o \
+						   ObjectFiles/SyntaxAnalysis.o ObjectFiles/Tree.o        ObjectFiles/TreeDump.o -o front_end
 
 ObjectFiles/ArmyFrontEnd.o: ArmyFrontEnd.cpp ArmyFrontEnd.h StackMemStruct/my_stack.h StackMemStruct/color_print.h Instruments.h FrontEndTypes.h SyntaxAnalysis.h
 	@ g++ $(FLAGS) $(MODE) -c ArmyFrontEnd.cpp -o ObjectFiles/ArmyFrontEnd.o
 
 ObjectFiles/my_stack.o: StackMemStruct/my_stack.cpp StackMemStruct/my_stack.h StackMemStruct/color_print.h Instruments.h FrontEndTypes.h
 	@ g++ $(FLAGS) $(MODE) -c StackMemStruct/my_stack.cpp -o ObjectFiles/my_stack.o
+
+ObjectFiles/Tree.o: TreeMemStruct/Tree.cpp TreeMemStruct/Tree.h TreeMemStruct/TreeBase.h
+	@ g++ $(FLAGS) $(MODE) -c TreeMemStruct/Tree.cpp -o ObjectFiles/Tree.o
+
+ObjectFiles/TreeDump.o: TreeMemStruct/TreeDump.cpp TreeMemStruct/TreeDump.h \
+						TreeMemStruct/Tree.h TreeMemStruct/TreeBase.h
+	@ g++ $(FLAGS) $(MODE) -c TreeMemStruct/TreeDump.cpp -o ObjectFiles/TreeDump.o
 
 ObjectFiles/Instruments.o: Instruments.cpp Instruments.h StackMemStruct/color_print.h FrontEndTypes.h
 	@ g++ $(FLAGS) $(MODE) -c Instruments.cpp -o ObjectFiles/Instruments.o

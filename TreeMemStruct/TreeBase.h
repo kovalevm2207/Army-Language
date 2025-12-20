@@ -7,7 +7,20 @@
 #include <string.h>
 
 #include "color_print.h"
-#include "../a.out.h"
+#include "../FrontEndTypes.h"
+
+
+typedef struct Node_t Node_t;
+
+typedef struct Node_t
+{
+    Node_t**    prev_node;
+    NodeType_t       type;
+    NodeData_t       data;
+    Node_t*          left;
+    Node_t*         right;
+} Node_t;
+
 
 /*
 const struct
@@ -41,16 +54,6 @@ const struct
 };*/
 
 
-typedef struct Node_t Node_t;
-
-typedef struct Node_t
-{
-    Node_t**    prev_node;
-    NodeType_t       type;
-    NodeData_t       data;
-    Node_t*          left;
-    Node_t*         right;
-} Node_t;
 
 const size_t START_VARS_NUM = 4;
 
@@ -90,27 +93,6 @@ typedef enum
     INORDER   = 1,
     POSTORDER = 2
 } TraverseMode_t;
-
-typedef struct
-{
-    NodeType_t type;
-    Value_t value;
-} data_t;
-
-typedef struct
-{
-    double left_border;
-    double right_border;
-} Scale_t;
-
-typedef struct
-{
-    Tree_t* user_tree;
-    size_t taylor_order;
-    double expansion_dot;
-    Scale_t x;
-    Scale_t y;
-} ProgramData_t;
 
 #ifdef DEBUG
     #define ON_DEBUG(func) func
