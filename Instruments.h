@@ -20,6 +20,7 @@
 
 #define FREE(ptr) if(ptr) {free(ptr); ptr = NULL;}
 #define ERR_PRINT(text) fprintf(stderr, RED_COLOR text RESET)
+#define ERR_PRINTF(text, ...) fprintf(stderr, RED_COLOR text RESET, __VA_ARGS__)
 
 const double PRECISION = 1e-12;
 const size_t ST_W_LEN = 5;
