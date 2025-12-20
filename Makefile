@@ -31,17 +31,23 @@ endif
 
 all: front_end
 
-front_end: ObjectFiles/ArmyFrontEnd.o ObjectFiles/Instruments.o ObjectFiles/my_stack.o
-	@ g++ $(FLAGS) $(MODE) ObjectFiles/ArmyFrontEnd.o ObjectFiles/Instruments.o ObjectFiles/my_stack.o -o front_end
+front_end: ObjectFiles/ArmyFrontEnd.o ObjectFiles/Instruments.o ObjectFiles/my_stack.o \
+		   ObjectFiles/SyntaxAnalysis.o
+	@ g++ $(FLAGS) $(MODE) ObjectFiles/ArmyFrontEnd.o ObjectFiles/Instruments.o ObjectFiles/my_stack.o \
+						   ObjectFiles/SyntaxAnalysis.o -o front_end
 
-ObjectFiles/ArmyFrontEnd.o: ArmyFrontEnd.cpp ArmyFrontEnd.h StackMemStruct/my_stack.h Instruments.h
+ObjectFiles/ArmyFrontEnd.o: ArmyFrontEnd.cpp ArmyFrontEnd.h StackMemStruct/my_stack.h StackMemStruct/color_print.h Instruments.h FrontEndTypes.h SyntaxAnalysis.h
 	@ g++ $(FLAGS) $(MODE) -c ArmyFrontEnd.cpp -o ObjectFiles/ArmyFrontEnd.o
 
-ObjectFiles/my_stack.o: StackMemStruct/my_stack.cpp StackMemStruct/my_stack.h StackMemStruct/color_print.h
+ObjectFiles/my_stack.o: StackMemStruct/my_stack.cpp StackMemStruct/my_stack.h StackMemStruct/color_print.h Instruments.h FrontEndTypes.h
 	@ g++ $(FLAGS) $(MODE) -c StackMemStruct/my_stack.cpp -o ObjectFiles/my_stack.o
 
-ObjectFiles/Instruments.o: Instruments.cpp Instruments.h StackMemStruct/color_print.h
+ObjectFiles/Instruments.o: Instruments.cpp Instruments.h StackMemStruct/color_print.h FrontEndTypes.h
 	@ g++ $(FLAGS) $(MODE) -c Instruments.cpp -o ObjectFiles/Instruments.o
+
+ObjectFiles/SyntaxAnalysis.o: SyntaxAnalysis.cpp SyntaxAnalysis.h Instruments.h FrontEndTypes.h
+	@ g++ $(FLAGS) $(MODE) -c SyntaxAnalysis.cpp -o ObjectFiles/SyntaxAnalysis.o
+
 
 clean:
 	rm ObjectFiles/*.o front_end

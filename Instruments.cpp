@@ -57,3 +57,64 @@ void HelpUser(void)
                     "                        ./math++ My_file.txt\n\n"
                     "Где 'My_file.txt' название файла, содержащего ваши данные с указанием полного пути до текущей директории\n\n");
 }
+size_t CheckLen(char** word, size_t word_len, const size_t letter)
+{
+    assert(word);
+    assert(*word);
+    assert(letter <= word_len);
+
+    if(letter == word_len)
+    {
+        char* new_word = (char*) realloc(*word, (word_len * 2) * sizeof(char));
+        assert(new_word);
+        *word = new_word;
+        memset(*word + word_len, 0, word_len);
+        word_len *= 2;
+    }
+
+    return word_len;
+}
+void CleanToken(Token_t* token)
+{
+    assert(token);
+
+    token->ptr = NULL;
+         if(token->type == TOKEN_NUM)   token->data.num  = 0;
+    else if(token->type == TOKEN_WORD)  token->data.word = NULL;
+    token->type = EMPTY_TOKEN;
+
+    return;
+}
+bool is_cyrillic_symbol(const char* s)
+{
+    assert(s);
+
+    unsigned char c1 = (unsigned char)s[0];
+    unsigned char c2 = (unsigned char)s[1];
+
+    if (s[1] == '\0') return false;
+
+    if (c1 == 0xD0)      return (c2 >= 0x90 && c2 <= 0xBF);
+    else if (c1 == 0xD1) return (c2 >= 0x80 && c2 <= 0x8F);
+
+    return false;
+}
+void PrintCyrillicString(char* string)
+{
+    assert(string);
+
+    while(*string != '\0')
+    {
+        if(is_cyrillic_symbol(string))
+        {
+            printf("%c%c", string[0], string[1]);
+            string += 2;
+        }
+        else
+        {
+            printf("%c", *string);
+            string++;
+        }
+    }
+    return;
+}

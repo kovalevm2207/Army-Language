@@ -7,29 +7,10 @@
 #include <string.h>
 
 #include "color_print.h"
+#include "../Instruments.h"
+#include "../FrontEndTypes.h"
 
-typedef enum
-{
-    OP,
-    NUM,
-    WORD
-} TokenType_t;
-
-typedef union
-{
-    const char* op;
-    int   num;
-    const char* word;
-} TokenData_t;
-
-typedef struct
-{
-    const char* ptr;
-    TokenType_t type;
-    TokenData_t data;
-} Token_t;
-
-typedef Token_t* stack_t;
+typedef Token_t stack_t;
 
 const int MAXSIZE = 1e9; // or todo 1e9
 const int L_STACK_CANARY = 0xBADDED;

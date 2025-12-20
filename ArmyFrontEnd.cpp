@@ -3,23 +3,37 @@
 int main(const int argc, const char* const argv[])
 {
     char* buffer = ReadFile(argc, argv);
-    Token_t* lexical_analysis = MakeLexicalAnalysis(buffer);
+    stack_s lexical_analysis = MakeLexicalAnalysis(buffer);
 
-    FREE(lexical_analysis)
+    StackDtor(&lexical_analysis);
     FREE(buffer)
 }
 
-Token_t* MakeLexicalAnalysis(char* s)
+stack_s  MakeLexicalAnalysis(char* s)
 {
     assert(s);
-    s = SkipSpaces(s);
 
+    stack_s stk = {};
+    StackCtor(&stk, ST_LEXEME_NUM);
+
+    Token_t token = {};
     while(*s != '\0')
     {
-        if('0' <= *s && *s <= '9')
+        s = SkipSpaces(s);
+        token.ptr = s;
+        if( '0' <= *s && *s <= '9')    {token.type = TOKEN_NUM;  token.data.num  = GetNum(&s);}
+        else if(is_cyrillic_symbol(s)) {token.type = TOKEN_WORD; token.data.word = GetWord(&s);}
+        else
         {
-            printf("тук\n");
+            fprintf(stderr, "ERROR : [%c][%d]\n", *s, *s);
+            ERR_PRINT("СЛЫШНЫХЫБЛЯ ЭТЫЧЗАХЫРНЯ БЛ!?\n");
+            assert(false);
         }
+        StackPush(&stk, token);
+        CleanToken(&token);
+        s = SkipSpaces(s);
     }
-    return NULL;
+
+    StackDump(&stk);
+    return stk;
 }
