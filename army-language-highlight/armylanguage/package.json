@@ -1,0 +1,24 @@
+{
+    "name": "armylanguage",
+    "displayName": "ArmyLanguage",
+    "description": ".army",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.60.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "armylanguage",
+            "extensions": [".army"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "armylanguage",
+            "scopeName": "source.armylanguage",
+            "path": "./syntaxes/armylanguage.tmLanguage.json"
+        }]
+    }
+}
