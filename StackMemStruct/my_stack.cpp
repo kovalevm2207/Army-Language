@@ -151,12 +151,12 @@ StackErr_t print_data(stack_s* stk)
             else if (stk->data[i].data.num != STACK_POISON )
             {
                 if(stk->data[i].type == TOKEN_NUM)
-                    printf(ORANGE_COLOR "       *[%4zu] = %d         (VALUE) \n" RESET, i, stk->data[i].data.num);
+                    printf(ORANGE_COLOR "       *[%4zu] = %d\n" RESET, i, stk->data[i].data.num);
                 else
                 {
                     printf(ORANGE_COLOR "       *[%4zu] = ", i);
                     PrintCyrillicString(stk->data[i].data.word);
-                    printf(             "        (VALUE) \n" RESET);
+                    printf(             "\n" RESET);
                 }
             }
         }

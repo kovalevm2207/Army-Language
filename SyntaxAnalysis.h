@@ -7,11 +7,17 @@
 #include "StackMemStruct/my_stack.h"
 #include "TreeMemStruct/Tree.h"
 
-const int ST_LEXEME_NUM = 128;
+const int ST_LEXEME_NUM = 32;
 
-bool CheckGrammar(const stack_s lexical_analysis, const size_t cur_lexeme, const char* const string);
+void SyntaxErrPrint(const stack_s lexical_analysis, const size_t cur_lexeme);
+bool CheckGrammar_(const stack_s lexical_analysis, const size_t cur_lexeme, const char* const string);
+Node_t* GetBody(const stack_s lexical_analysis, size_t* cur_lexeme_);
 Node_t* GetProgram(const stack_s lexical_analysis);
 bool GetStart(const stack_s lexical_analysis, size_t* cur_lexeme_);
+bool GetEnd(const stack_s lexical_analysis, size_t* cur_lexeme_);
+int GetFuncNum(const stack_s lexical_analysis, const size_t cur_lexeme);
+int GetVarNum(const stack_s lexical_analysis, const size_t cur_lexeme);
+
 int GetNum(char** s);
 char* GetWord(char** s);
 
