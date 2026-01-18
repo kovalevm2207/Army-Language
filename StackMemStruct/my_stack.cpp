@@ -70,9 +70,6 @@ StackErr_t StackDtor_(stack_s* stk, const char* file, int line)
 
     for(size_t i = 1; i <= stk->capacity; i++)
     {
-        if(stk->data[i].type == TOKEN_WORD)
-            FREE(stk->data[i].data.word)
-
         stk->data[i].data.num = STACK_POISON;
         stk->data[i].type     = EMPTY_TOKEN;
     }
@@ -145,18 +142,27 @@ StackErr_t print_data(stack_s* stk)
         printf("    {\n");
         for (size_t i = 0; i < stk->capacity + 2; i++) {
             if (stk->data[i].data.num == STACK_POISON)
-                printf(CYAN_COLOR  "        [%4zu] = %d         (POISON)\n" RESET, i, stk->data[i].data.num);
+                printf(CYAN_COLOR  "        [%4zu] : %d         (POISON)\n" RESET, i, stk->data[i].data.num);
             if (stk->data[i].data.num == L_STACK_CANARY || stk->data[i].data.num == R_STACK_CANARY)
-                printf(PURPLE_COLOR "        [%4zu] = %d         (CANARY)\n" RESET, i, stk->data[i].data.num);
-            else if (stk->data[i].data.num != STACK_POISON )
+                printf(PURPLE_COLOR "        [%4zu] : %d         (CANARY)\n" RESET, i, stk->data[i].data.num);
+            else if (stk->data[i].data.num != STACK_POISON)
             {
-                if(stk->data[i].type == TOKEN_NUM)
-                    printf(ORANGE_COLOR "       *[%4zu] = %d\n" RESET, i, stk->data[i].data.num);
-                else
+                printf(ORANGE_COLOR "       *[%4zu] : type = %s | data = ", i, TokenTypesNames[stk->data[i].type]);
+                switch(stk->data[i].type)
                 {
-                    printf(ORANGE_COLOR "       *[%4zu] = ", i);
-                    PrintCyrillicString(stk->data[i].data.word);
-                    printf(             "\n" RESET);
+                    case NUM_TOKEN:  printf("%d\n" RESET, stk->data[i].data.num);                  break;
+                    case VAR_TOKEN:  printf("%s\n" RESET, Vars[stk->data[i].data.name]);           break;
+                    case FUNC_TOKEN: printf("%s\n" RESET, Functions[stk->data[i].data.word]);      break;
+                    case START_TOKEN:
+                    case HLT_TOKEN:
+                    case KEY_WORD_TOKEN:
+                    case MATH_TOKEN:
+                    case COMPARE_TOKEN:
+                    case IN_FUNC_TOKEN:
+                                    printf("%s\n" RESET, WordsTypesNames[stk->data[i].data.word]); break;
+                    case EMPTY_TOKEN:
+                    default:
+                                    printf("UNKNOWN\n" RESET);                                     break;
                 }
             }
         }

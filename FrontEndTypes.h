@@ -3,87 +3,169 @@
 
 #include <stdio.h>
 
+
+//~~~~~~~~~~~~~~~~~~~~//
+//  Lexical Analysis  //
+//~~~~~~~~~~~~~~~~~~~~//
+
 typedef enum
 {
-    EMPTY_TOKEN,
-    TOKEN_NUM,
-    TOKEN_WORD
+    NUM_TOKEN,
+    START_TOKEN,
+    HLT_TOKEN,
+    KEY_WORD_TOKEN,
+    MATH_TOKEN,
+    COMPARE_TOKEN,
+    IN_FUNC_TOKEN,
+    FUNC_TOKEN,
+    VAR_TOKEN,
+    EMPTY_TOKEN
 } TokenType_t;
+
+const char* const TokenTypesNames[]
+{
+    "NUM_TOKEN",
+    "START_TOKEN",
+    "HLT_TOKEN",
+    "KEY_WORD_TOKEN",
+    "MATH_TOKEN",
+    "COMPARE_TOKEN",
+    "IN_FUNC_TOKEN",
+    "FUNC_TOKEN",
+    "VAR_TOKEN",
+    "EMPTY_TOKEN"
+};
+
+typedef enum
+{
+    //START_TOKEN
+    ST_1, ST_2, ST_3, ST_4,
+    //HLT_TOKEN
+    HLT_1, HLT_2,
+    //KEY_WORD_TOKEN
+    L_FIG, R_FIG, L_RND, R_RND,
+    BEGING, END,
+    FUNC_DEC, VAR_DEC, FUNC_CALL,
+    //MATH_TOKEN
+    AST, ADD, SUB, DIV, MUL, MOD,
+    //COMPARE_TOKEN
+    GREATER, GREATER_EQ, LESS, LESS_EQ, N_EQ, EQ,
+    //IN_FUNC_TOKEN
+    IF, WHILE, PRINT, IN, RET,
+    //FUNC_TOKEN
+    FUNC_NAME,
+    //VAR_TOKEN
+    VAR_NAME,
+    //EMPTY_TOKEN
+    UNKNOWN
+} Word_t;
+
+const char* const WordsTypesNames[]
+{
+    "ST_1", "ST_2", "ST_3", "ST_4",
+    "HLT_1", "HLT_2",
+    "L_FIG", "R_FIG", "L_RND", "R_RND",
+    "BEGING", "END",
+    "FUNC_DEC", "VAR_DEC", "FUNC_CALL",
+    "AST", "ADD", "SUB", "DIV", "MUL", "MOD",
+    "GREATER", "GREATER_EQ", "LESS", "LESS_EQ", "N_EQ", "EQ",
+    "IF", "WHILE", "PRINT", "IN", "RET",
+    "FUNC_NAME",
+    "VAR_NAME",
+    "UNKNOWN"
+};
 
 typedef union
 {
-    int   num;
-    char* word;
+    int    num;  //num - its data
+    size_t name; //var/func - its number of name
+    Word_t word; //other - enum
 } TokenData_t;
 
 typedef struct
 {
-    const char* ptr;
     TokenType_t type;
     TokenData_t data;
 } Token_t;
 
-typedef enum
-{
-    WHILE_OP,   // while      оператор цикла
-    PRINT_OP,   // print      печатающий оператор
-    LINK_OP,    // LINKER     для связи частей программы
-    RET_OP,     // return     возвращающий значение оператор
-    HLT_OP,     // HLT        означает конец программы
-    AST_OP,     // =          оператор присваивания
-    ADD_OP,     // +          оператор сложения
-    SUB_OP,     // -          оператор вычитания
-    DIV_OP,     // /          оператор деления
-    MUL_OP,     // *          оператор умножения
-    MOD_OP,     // %          оператор остатка от деления
-    IF_OP,      // if         условный оператор
-    IN_OP,      // in         оператор запроса данных от пользователя
-    GT_OP,      // >          оператор сравнения меньше
-    GE_OP,      // >=         оператор сравнения или равно
-    LT_OP,      // <          оператор сравнения меньше
-    LE_OP,      // <=         оператор сравнения меньше ил равно
-    NE_OP,      // !=         оператор сравнения не равно
-    EQ_OP,      // ==         оператор сравнения равно
-    NOT_OP
-} Operator_t;
 
-const struct
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+//  Arrows for Lexical Analysis  //
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+typedef const struct
 {
-    const Operator_t  num;
-    const char* const op_name;
-    const char* const a_l_name;
-} Operators[] =
+    const Word_t      num;
+    const char* const name;
+} TokenInfo_t;
+
+TokenInfo_t Start[] =
 {
-    {WHILE_OP, "WHILE_OP", "Пидорасишь"                   },
-    {PRINT_OP, "PRINT_OP", "Громко_и_четко_назови"        },
-    {LINK_OP,  "LINK_OP",  NULL                           },
-    {RET_OP,   "RET_OP",   "Кому_сказал_на"               },
-    {HLT_OP,   "HLT_OP",   "Вольно! Разойдись!"           },
-    {AST_OP,   "AST_OP",   "Есть_ничто_иное_как"          },
-    {ADD_OP,   "ADD_OP",   "Перекрестие"                  },
-    {SUB_OP,   "SUB_OP",   "Себе_в_минус"                 },
-    {DIV_OP,   "DIV_OP",   "Отбива"                       },
-    {MUL_OP,   "MUL_OP",   "Не_звезди"                    },
-    {MOD_OP,   "MOD_OP",   "Вражеская_разработка"         },
-    {IF_OP,    "IF_OP",    "Разведать_обстановку"         },
-    {IN_OP,    "IN_OP",    "Разведать_обстановку"         },
-    {GT_OP,    "GT_OP",    "Больше_нарядов_вне_очереди"   },
-    {GE_OP,    "GE_OP",    "Только_не_включай"            },
-    {LT_OP,    "LT_OP",    "Укради_роди_найди"            },
-    {LE_OP,    "LE_OP",    "Меньше_можно_больше_нельзя"   },
-    {NE_OP,    "NE_OP",    "Руки_убрал"                   },
-    {EQ_OP,    "EQ_OP",    "Неотъемлемая_часть"           },
+    {ST_1, "Становись!"            },
+    {ST_2, "Равняйсь!"             },
+    {ST_3, "Смирно!"               },
+    {ST_4, "Равнение_на_середину!" }
 };
 
-const size_t OPERATORS_NUM = sizeof(Operators)/sizeof(Operators[0]);
+const size_t START_NUM = sizeof(Start)/sizeof(Start[0]);
 
-typedef union
+TokenInfo_t Hlt[] =
 {
-    Operator_t op;
-    size_t     var;
-    int        num;
-    size_t     func;
-} NodeData_t;
+    {HLT_1, "Вольно!"    },
+    {HLT_2, "Разойдись!" }
+};
+
+const size_t HLT_NUM = sizeof(Hlt)/sizeof(Hlt[0]);
+
+TokenInfo_t KeyWord[] =
+{
+    {L_FIG,     "Только_попробуйте_сделать_по_другому" },
+    {R_FIG,     "Ноги_руки_оторву"                     },
+    {L_RND,     "Быстро_на"                            },
+    {R_RND,     "Кому_сказал_на"                       },
+    {BEGING,    "Чтобы"                                },
+    {END,       "Уяснил_солдат!?"                      },
+    {FUNC_DEC,  "Слушай_боевую_задачу!"                },
+    {VAR_DEC,   "С_этого_момента"                      },
+    {FUNC_CALL, "Приступаем_к_операции"                }
+};
+
+const size_t KEY_WORD_NUM = sizeof(KeyWord)/sizeof(KeyWord[0]);
+
+TokenInfo_t Math[] =
+{
+    {AST, "Есть_ничто_иное_как"  },
+    {ADD, "Перекрестие"          },
+    {SUB, "Себе_в_минус"         },
+    {DIV, "Отбива"               },
+    {MUL, "Не_звезди"            },
+    {MOD, "Вражеская_разработка" }
+};
+
+const size_t MATH_NUM = sizeof(Math)/sizeof(Math[0]);
+
+TokenInfo_t Compare[] =
+{
+    {GREATER,    "Больше_нарядов_вне_очереди" },
+    {GREATER_EQ, "Только_не_включай"          },
+    {LESS_EQ,    "Меньше_можно_больше_нельзя" },
+    {LESS,       "Укради_роди_найди"          },
+    {N_EQ,       "Руки_убрал"                 },
+    {EQ,         "Неотъемлемая_часть"         }
+};
+
+const size_t COMPARE_NUM = sizeof(Compare)/sizeof(Compare[0]);
+
+TokenInfo_t InFunc[] =
+{
+    {IF,    "Не_дай_бог_блять"              },
+    {WHILE, "Пидорасишь"                    },
+    {PRINT, "Громко_и_четко_назови"         },
+    {IN,    "Разведать_обстановку"          },
+    {RET,   "Только_попробуйте_съебаться_с" }
+};
+
+const size_t In_FUNC_NUM = sizeof(InFunc)/sizeof(InFunc[0]);
 
 const char* const Vars[]=
 {
@@ -154,6 +236,36 @@ const char* const Functions[]=
 };
 
 const size_t FUNCTIONS_NUM = sizeof(Functions)/sizeof(Functions[0]);
+
+const struct
+{
+    TokenInfo_t* arrow;
+    const size_t len;
+    TokenType_t  type;
+} NotNameArrows[] =
+{
+    {Start,     START_NUM,     START_TOKEN    },
+    {Hlt,       HLT_NUM,       HLT_TOKEN      },
+    {KeyWord,   KEY_WORD_NUM,  KEY_WORD_TOKEN },
+    {Math,      MATH_NUM,      MATH_TOKEN     },
+    {Compare,   COMPARE_NUM,   COMPARE_TOKEN  },
+    {InFunc,    In_FUNC_NUM,   IN_FUNC_TOKEN  }
+};
+
+const size_t NOT_NAME_ARROWS_NUM = sizeof(NotNameArrows)/sizeof(NotNameArrows[0]);
+
+
+//~~~~~~~~~~~~~~~~~~~//
+//  Syntax Analysis  //
+//~~~~~~~~~~~~~~~~~~~//
+
+typedef union
+{
+    Word_t     op;
+    size_t     var;
+    int        num;
+    size_t     func;
+} NodeData_t;
 
 typedef enum
 {

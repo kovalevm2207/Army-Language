@@ -31,10 +31,10 @@ endif
 
 all: front_end
 
-front_end: ObjectFiles/ArmyFrontEnd.o   ObjectFiles/Instruments.o ObjectFiles/my_stack.o \
-		   ObjectFiles/SyntaxAnalysis.o ObjectFiles/Tree.o        ObjectFiles/TreeDump.o
+front_end: ObjectFiles/ArmyFrontEnd.o    ObjectFiles/Instruments.o ObjectFiles/my_stack.o \
+		   ObjectFiles/LexicalAnalysis.o
 	@ g++ $(FLAGS) $(MODE) ObjectFiles/ArmyFrontEnd.o   ObjectFiles/Instruments.o ObjectFiles/my_stack.o \
-						   ObjectFiles/SyntaxAnalysis.o ObjectFiles/Tree.o        ObjectFiles/TreeDump.o -o front_end
+						   ObjectFiles/LexicalAnalysis.o -o front_end
 
 ObjectFiles/ArmyFrontEnd.o: ArmyFrontEnd.cpp ArmyFrontEnd.h StackMemStruct/my_stack.h StackMemStruct/color_print.h Instruments.h FrontEndTypes.h SyntaxAnalysis.h
 	@ g++ $(FLAGS) $(MODE) -c ArmyFrontEnd.cpp -o ObjectFiles/ArmyFrontEnd.o
@@ -54,6 +54,9 @@ ObjectFiles/Instruments.o: Instruments.cpp Instruments.h StackMemStruct/color_pr
 
 ObjectFiles/SyntaxAnalysis.o: SyntaxAnalysis.cpp SyntaxAnalysis.h Instruments.h FrontEndTypes.h
 	@ g++ $(FLAGS) $(MODE) -c SyntaxAnalysis.cpp -o ObjectFiles/SyntaxAnalysis.o
+
+ObjectFiles/LexicalAnalysis.o: LexicalAnalysis.cpp LexicalAnalysis.h Instruments.h FrontEndTypes.h
+	@ g++ $(FLAGS) $(MODE) -c LexicalAnalysis.cpp -o ObjectFiles/LexicalAnalysis.o
 
 
 clean:

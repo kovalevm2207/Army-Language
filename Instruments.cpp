@@ -78,9 +78,8 @@ void CleanToken(Token_t* token)
 {
     assert(token);
 
-    token->ptr = NULL;
-         if(token->type == TOKEN_NUM)   token->data.num  = 0;
-    else if(token->type == TOKEN_WORD)  token->data.word = NULL;
+         if(token->type == NUM_TOKEN)   token->data.num  = 0;
+    else if(token->type != EMPTY_TOKEN) token->data.word = UNKNOWN;
     token->type = EMPTY_TOKEN;
 
     return;

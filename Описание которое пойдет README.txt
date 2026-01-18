@@ -213,7 +213,7 @@ FUNCTION DECLARATIONS
     GetBody           ::= {GetFunctions}* GetMain
 
     (Объявление функций)
-    GetFunctions      ::= "Слушай_боевую_задачу!" GetFuncName "Быстро_на" {GetParam}* "Кому_сказал_на"
+    GetFunctions      ::= "Слушай_боевую_задачу!" GetFuncName "Быстро_на" {GetVar}* "Кому_сказал_на"
                           "Только_попробуйте_сделать_по_другому" GetDescription "Ноги_руки_оторву"
 
     (Объявление главной функции)
@@ -271,9 +271,6 @@ HELPFUL EXPRESSIONS
 
     (Считывание степени вложенности)
     GetNesting        ::= "Пидорасишь" | "Не_дай_бог_блять"
-
-    (Параметры функций)
-    GetParam          ::= "Известные_разведданные" GetVar
 
     (ВызовФункции)
     GetCall           ::= "Чтобы" GetContext "Приступаем_к_операции" GetFuncName "Быстро_на" GetExpression "Кому_Сказал_на"
