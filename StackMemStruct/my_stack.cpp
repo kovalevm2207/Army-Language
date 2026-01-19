@@ -147,7 +147,8 @@ StackErr_t print_data(stack_s* stk)
                 printf(PURPLE_COLOR "        [%4zu] : %d         (CANARY)\n" RESET, i, stk->data[i].data.num);
             else if (stk->data[i].data.num != STACK_POISON)
             {
-                printf(ORANGE_COLOR "       *[%4zu] : type = %s | data = ", i, TokenTypesNames[stk->data[i].type]);
+                (stk->data[i].type == EMPTY_TOKEN) ? printf(RED_COLOR) : printf(ORANGE_COLOR);
+                printf("       *[%4zu] : type = %s | data = ", i, TokenTypesNames[stk->data[i].type]);
                 switch(stk->data[i].type)
                 {
                     case NUM_TOKEN:  printf("%d\n" RESET, stk->data[i].data.num);                  break;

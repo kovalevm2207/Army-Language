@@ -4,9 +4,6 @@
 #include "FrontEndTypes.h"
 #include "Instruments.h"
 #include "StackMemStruct/my_stack.h"
-#include "SyntaxAnalysis.h"
-#include "TreeMemStruct/Tree.h"
-
-stack_s  MakeLexicalAnalysis(char* s);
+#include "LexicalAnalysis.h"
 
 #endif//ARMY_FRONT_END

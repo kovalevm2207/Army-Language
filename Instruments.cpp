@@ -8,7 +8,7 @@ char* ReadFile(const int argc, const char* const argv[])
     if(argc != 2)
     {
         HelpUser();
-        name = "лови шпиона.army";
+        name = "по_порядку_расчитайсь.army";
     }else name = argv[1];
 
 
@@ -37,12 +37,19 @@ char* ReadFile(const int argc, const char* const argv[])
 
     return buffer;
 }
-char* SkipSpaces(char* ptr)
+char* SkipSpaces(char* ptr, size_t* line_counter, char** line_begining)
 {
     assert(ptr != NULL && "NUUL ptr for SkipSpaces func");
+    assert(line_counter);
+    assert(line_begining);
 
     while(*ptr && isspace((unsigned char) *ptr))
     {
+        if(*ptr == '\n')
+        {
+            *line_begining = ptr + 1;
+            ++*line_counter;
+        }
         ptr++;
     }
     return ptr;
@@ -55,7 +62,8 @@ void HelpUser(void)
                     "Если хотите, чтобы программа запустилась с использованием вашего файла на вход командной строки\n"
                     "Подайте следующее выражение:\n\n"
                     "                        ./math++ My_file.txt\n\n"
-                    "Где 'My_file.txt' название файла, содержащего ваши данные с указанием полного пути до текущей директории\n\n");
+                    "Где 'My_file.txt' название файла, содержащего ваши данные с указанием полного пути до текущей директории\n"
+                    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n");
 }
 size_t CheckLen(char** word, size_t word_len, const size_t letter)
 {
@@ -102,7 +110,7 @@ void PrintCyrillicString(char* string)
 {
     assert(string);
 
-    while(*string != '\0')
+    while(*string != '\0' && *string != '\n')
     {
         if(is_cyrillic_symbol(string))
         {

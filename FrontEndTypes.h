@@ -38,25 +38,25 @@ const char* const TokenTypesNames[]
 
 typedef enum
 {
-    //START_TOKEN
+    //START_TOKENS:
     ST_1, ST_2, ST_3, ST_4,
-    //HLT_TOKEN
+    //HLT_TOKEN:
     HLT_1, HLT_2,
-    //KEY_WORD_TOKEN
+    //KEY_WORD_TOKENS:
     L_FIG, R_FIG, L_RND, R_RND,
     BEGING, END,
     FUNC_DEC, VAR_DEC, FUNC_CALL,
-    //MATH_TOKEN
+    //MATH_TOKENS:
     AST, ADD, SUB, DIV, MUL, MOD,
-    //COMPARE_TOKEN
+    //COMPARE_TOKENS:
     GREATER, GREATER_EQ, LESS, LESS_EQ, N_EQ, EQ,
-    //IN_FUNC_TOKEN
+    //IN_FUNC_TOKENS:
     IF, WHILE, PRINT, IN, RET,
-    //FUNC_TOKEN
+    //FUNC_TOKENS:
     FUNC_NAME,
-    //VAR_TOKEN
+    //VAR_TOKENS:
     VAR_NAME,
-    //EMPTY_TOKEN
+    //EMPTY_TOKENS:
     UNKNOWN
 } Word_t;
 

@@ -26,7 +26,7 @@ const double PRECISION = 1e-12;
 const size_t ST_W_LEN = 5;
 
 char* ReadFile(const int argc, const char* const argv[]);
-char* SkipSpaces(char* ptr);
+char* SkipSpaces(char* ptr, size_t* line_counter, char** line_begining);
 void HelpUser(void);
 size_t CheckLen(char** word, size_t word_len, const size_t letter);
 void CleanToken(Token_t* token);
