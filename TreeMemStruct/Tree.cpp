@@ -145,7 +145,7 @@ TreeErr_t TreeStructDumpF(FILE* stream, Tree_t* tree)
     return TREE_OK;
 }
 
-Node_t* TreeNodeCtor(NodeType_t type, NodeData_t value, Node_t* left_som, Node_t* right_som)
+Node_t* TreeNodeCtor(NodeType_t type, TokenData_t value, Node_t* left_som, Node_t* right_som)
 {
     Node_t* node = (Node_t*) calloc(1, sizeof(Node_t));
     if(node == NULL) return NULL;
@@ -201,13 +201,13 @@ TreeErr_t DeleteTreeNode(Node_t** node)
             cur_node->data.num = 0;
             break;
         case VAR:
-            cur_node->data.var = 0;
+            cur_node->data.name = 0;
             break;
         case OP:
-            cur_node->data.op = NOT_OP;
+            cur_node->data.word = UNKNOWN;
             break;
         case FUNC:
-            cur_node->data.func = 0;
+            cur_node->data.name = 0;
             break;
         default:
             return INCORRECT_TYPE;
@@ -262,9 +262,9 @@ TreeErr_t PrintTreeData(FILE* stream, const Node_t* node)
     switch(node->type)
     {
         case NUM:  fprintf(stream, " %d ", node->data.num                  ); break;
-        case OP:   fprintf(stream, " %s ", Operators[node->data.op].op_name); break;
-        case VAR:  fprintf(stream, " %s ", Vars[node->data.var]            ); break;
-        case FUNC: fprintf(stream, " %s ", Functions[node->data.func]      ); break;
+        case OP:   fprintf(stream, " %s ", WordsTypesNames[node->data.word]); break;
+        case VAR:  fprintf(stream, " %s ", Vars[node->data.name]            ); break;
+        case FUNC: fprintf(stream, " %s ", Functions[node->data.name]      ); break;
         default:
             return INCORRECT_TYPE;
     }

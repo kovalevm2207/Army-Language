@@ -103,10 +103,10 @@ void MakeNodes(const Node_t* node, int* node_count, FILE* file)
     );
     switch(node->type)
     {
-        case FUNC: fprintf(file, " %s ", Functions[node->data.func]      ); break;
+        case FUNC: fprintf(file, " %s ", Functions[node->data.name]      ); break;
         case NUM:  fprintf(file, " %d ", node->data.num                  ); break;
-        case VAR:  fprintf(file, " %s ", Vars[node->data.var]            ); break;
-        case OP:   fprintf(file, " %s ", Operators[node->data.op].op_name); break;
+        case VAR:  fprintf(file, " %s ", Vars[node->data.name]           ); break;
+        case OP:   fprintf(file, " %s ", WordsTypesNames[node->data.word]); break;
         default:
             return;
     }

@@ -5,5 +5,7 @@
 #include "Instruments.h"
 #include "StackMemStruct/my_stack.h"
 #include "LexicalAnalysis.h"
+#include "TreeMemStruct/Tree.h"
+#include "SyntaxAnalysis.h"
 
 #endif//ARMY_FRONT_END

@@ -56,6 +56,8 @@ typedef enum
     FUNC_NAME,
     //VAR_TOKENS:
     VAR_NAME,
+    //SERVICE TYPE
+    LINKER,
     //EMPTY_TOKENS:
     UNKNOWN
 } Word_t;
@@ -72,7 +74,8 @@ const char* const WordsTypesNames[]
     "IF", "WHILE", "PRINT", "IN", "RET",
     "FUNC_NAME",
     "VAR_NAME",
-    "UNKNOWN"
+    "UNKNOWN",
+    "LINKER"
 };
 
 typedef union
@@ -259,22 +262,14 @@ const size_t NOT_NAME_ARROWS_NUM = sizeof(NotNameArrows)/sizeof(NotNameArrows[0]
 //  Syntax Analysis  //
 //~~~~~~~~~~~~~~~~~~~//
 
-typedef union
-{
-    Word_t     op;
-    size_t     var;
-    int        num;
-    size_t     func;
-} NodeData_t;
-
 typedef enum
 {
-    NUM,
-    VAR,
-    OP,
-    FUNC
+    NUM,   // --> NodeData_t.num  --> int --> data of the number
+    OP,    // --> NodeData_t.word --> enum word_t
+    VAR,   // --> NodeData_t.name --> size_t = index in the arr
+    FUNC   // --> NodeData_t.name --> size_t = index in the arr
 } NodeType_t;
 
-const char* const NodeTypes[] = {"NUM", "VAR", "OP", "FUNC"};
+const char* const NodeTypes[] = {"NUM", "OP", "VAR", "FUNC"};
 
 #endif//FRONTENDTYPES
