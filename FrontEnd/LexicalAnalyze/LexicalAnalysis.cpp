@@ -224,3 +224,13 @@ void PrintErrUnderline(char* string, char* cur_pos)
     printf("\n\n");
     return;
 }
+void CleanToken(Token_t* token)
+{
+    assert(token);
+
+         if(token->type == NUM_TOKEN)   token->data.num  = 0;
+    else if(token->type != EMPTY_TOKEN) token->data.word = UNKNOWN;
+    token->type = EMPTY_TOKEN;
+
+    return;
+}

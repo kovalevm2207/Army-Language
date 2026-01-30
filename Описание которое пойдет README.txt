@@ -337,3 +337,28 @@ GetVar            ::= "Солдат"      | "ДлинаШеренги" | "Дли
                       "Очко"        | "Шухер"        | "Дневальный"   | "Дежурный"  | "Комбат"          | "Гражданские"        | "Ракеты"        | "Магазины"       | "Рана"         | "Маршбросок"
 
 
+Структура проекта:
+~~~~~~~~~~~~~~~~~~
+
+ArmyLanguage
+            \__ army-language-highlight
+            \__ FrontEnd
+                        \__ LexicalAnalyze
+                                          \__ StackMemStruct
+
+                        \__ SyntaxAnalyze
+                                         \__ TreeMemStruct
+                                         \__ StackMemStruct
+
+            \__ MiddleEnd
+                         \__ TreeMemStruct
+
+            \__ BackEnd
+                       \__ StackMemStruct
+
+            \__ ObjectFiles
+                           \__ FrontEnd
+                           \__ MiddleEnd
+                           \__ BackEnd
+
+            \__ ExecutableFiles

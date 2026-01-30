@@ -6,8 +6,8 @@
 #include <assert.h>
 #include <string.h>
 
-#include "color_print.h"
-#include "../FrontEndTypes.h"
+#include "../../../Instruments/color_print.h"
+#include "../../FrontEndTypes.h"
 
 
 typedef struct Node_t Node_t;

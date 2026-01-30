@@ -82,16 +82,6 @@ size_t CheckLen(char** word, size_t word_len, const size_t letter)
 
     return word_len;
 }
-void CleanToken(Token_t* token)
-{
-    assert(token);
-
-         if(token->type == NUM_TOKEN)   token->data.num  = 0;
-    else if(token->type != EMPTY_TOKEN) token->data.word = UNKNOWN;
-    token->type = EMPTY_TOKEN;
-
-    return;
-}
 bool is_cyrillic_symbol(const char* s)
 {
     assert(s);

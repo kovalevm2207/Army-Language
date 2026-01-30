@@ -29,37 +29,68 @@ else
 	FLAGS = $(DED_FLAGS_LINUX) -ITreeMemStruct
 endif
 
-all: front_end
+all: ExecutableFiles/front_end
 
-front_end: ObjectFiles/ArmyFrontEnd.o    ObjectFiles/Instruments.o    ObjectFiles/my_stack.o \
-		   ObjectFiles/LexicalAnalysis.o ObjectFiles/SyntaxAnalysis.o ObjectFiles/TreeDump.o \
-		   ObjectFiles/Tree.o
-	@ g++ $(FLAGS) $(MODE) ObjectFiles/ArmyFrontEnd.o    ObjectFiles/Instruments.o    ObjectFiles/my_stack.o \
-						   ObjectFiles/LexicalAnalysis.o ObjectFiles/SyntaxAnalysis.o ObjectFiles/TreeDump.o \
-						   ObjectFiles/Tree.o -o front_end
 
-ObjectFiles/ArmyFrontEnd.o: ArmyFrontEnd.cpp ArmyFrontEnd.h StackMemStruct/my_stack.h StackMemStruct/color_print.h Instruments.h FrontEndTypes.h SyntaxAnalysis.h
-	@ g++ $(FLAGS) $(MODE) -c ArmyFrontEnd.cpp -o ObjectFiles/ArmyFrontEnd.o
 
-ObjectFiles/my_stack.o: StackMemStruct/my_stack.cpp StackMemStruct/my_stack.h StackMemStruct/color_print.h Instruments.h FrontEndTypes.h
-	@ g++ $(FLAGS) $(MODE) -c StackMemStruct/my_stack.cpp -o ObjectFiles/my_stack.o
+ExecutableFiles/front_end: ObjectFiles/FrontEnd/FrontEnd.o \
+						   ObjectFiles/FrontEnd/LexicalAnalysis.o ObjectFiles/FrontEnd/my_stack.o \
+						   ObjectFiles/FrontEnd/Tree.o            ObjectFiles/FrontEnd/TreeDump.o ObjectFiles/FrontEnd/SyntaxAnalysis.o \
+						   ObjectFiles/Instruments.o
+	@ g++ $(FLAGS) $(MODE) ObjectFiles/FrontEnd/FrontEnd.o \
+						   ObjectFiles/FrontEnd/LexicalAnalysis.o ObjectFiles/FrontEnd/my_stack.o \
+						   ObjectFiles/FrontEnd/Tree.o            ObjectFiles/FrontEnd/TreeDump.o ObjectFiles/FrontEnd/SyntaxAnalysis.o \
+						   ObjectFiles/Instruments.o -o ExecutableFiles/front_end
 
-ObjectFiles/Tree.o: TreeMemStruct/Tree.cpp TreeMemStruct/Tree.h TreeMemStruct/TreeBase.h
-	@ g++ $(FLAGS) $(MODE) -c TreeMemStruct/Tree.cpp -o ObjectFiles/Tree.o
+#               FRONT_END
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+ObjectFiles/FrontEnd/FrontEnd.o: FrontEnd/FrontEnd.cpp FrontEnd/FrontEnd.h  FrontEnd/FrontEndTypes.h
+	@ g++ $(FLAGS) $(MODE) -c FrontEnd/FrontEnd.cpp -o ObjectFiles/FrontEnd/FrontEnd.o
 
-ObjectFiles/TreeDump.o: TreeMemStruct/TreeDump.cpp TreeMemStruct/TreeDump.h \
-						TreeMemStruct/Tree.h TreeMemStruct/TreeBase.h
-	@ g++ $(FLAGS) $(MODE) -c TreeMemStruct/TreeDump.cpp -o ObjectFiles/TreeDump.o
 
-ObjectFiles/Instruments.o: Instruments.cpp Instruments.h StackMemStruct/color_print.h FrontEndTypes.h
-	@ g++ $(FLAGS) $(MODE) -c Instruments.cpp -o ObjectFiles/Instruments.o
+# LEXICAL ANALYZE
+#~~~~~~~~~~~~~~~~~#
+ObjectFiles/FrontEnd/my_stack.o: FrontEnd/LexicalAnalyze/StackMemStruct/my_stack.cpp \
+								 FrontEnd/LexicalAnalyze/StackMemStruct/my_stack.h \
+								 FrontEnd/FrontEndTypes.h
+	@ g++ $(FLAGS) $(MODE) -c FrontEnd/LexicalAnalyze/StackMemStruct/my_stack.cpp -o ObjectFiles/FrontEnd/my_stack.o
 
-ObjectFiles/SyntaxAnalysis.o: SyntaxAnalysis.cpp SyntaxAnalysis.h Instruments.h FrontEndTypes.h
-	@ g++ $(FLAGS) $(MODE) -c SyntaxAnalysis.cpp -o ObjectFiles/SyntaxAnalysis.o
+ObjectFiles/FrontEnd/LexicalAnalysis.o: FrontEnd/LexicalAnalyze/LexicalAnalysis.cpp \
+										FrontEnd/LexicalAnalyze/LexicalAnalysis.h \
+										FrontEnd/FrontEndTypes.h
+	@ g++ $(FLAGS) $(MODE) -c FrontEnd/LexicalAnalyze/LexicalAnalysis.cpp -o ObjectFiles/FrontEnd/LexicalAnalysis.o
+#~~~~~~~~~~~~~~~~~#
 
-ObjectFiles/LexicalAnalysis.o: LexicalAnalysis.cpp LexicalAnalysis.h Instruments.h FrontEndTypes.h
-	@ g++ $(FLAGS) $(MODE) -c LexicalAnalysis.cpp -o ObjectFiles/LexicalAnalysis.o
+# SYNTAX ANALYZE
+#~~~~~~~~~~~~~~~~#
+ObjectFiles/FrontEnd/Tree.o: FrontEnd/SyntaxAnalyze/TreeMemStruct/Tree.cpp \
+							 FrontEnd/SyntaxAnalyze/TreeMemStruct/Tree.h \
+							 FrontEnd/SyntaxAnalyze/TreeMemStruct/TreeBase.h
+	@ g++ $(FLAGS) $(MODE) -c FrontEnd/SyntaxAnalyze/TreeMemStruct/Tree.cpp -o ObjectFiles/FrontEnd/Tree.o
+
+ObjectFiles/FrontEnd/TreeDump.o: FrontEnd/SyntaxAnalyze/TreeMemStruct/TreeDump.cpp \
+								 FrontEnd/SyntaxAnalyze/TreeMemStruct/TreeDump.h \
+								 FrontEnd/SyntaxAnalyze/TreeMemStruct/Tree.h \
+								 FrontEnd/SyntaxAnalyze/TreeMemStruct/TreeBase.h
+	@ g++ $(FLAGS) $(MODE) -c FrontEnd/SyntaxAnalyze/TreeMemStruct/TreeDump.cpp -o ObjectFiles/FrontEnd/TreeDump.o
+
+ObjectFiles/FrontEnd/SyntaxAnalysis.o: FrontEnd/SyntaxAnalyze/SyntaxAnalysis.cpp \
+									   FrontEnd/SyntaxAnalyze/SyntaxAnalysis.h \
+									   FrontEnd/FrontEndTypes.h
+	@ g++ $(FLAGS) $(MODE) -c FrontEnd/SyntaxAnalyze/SyntaxAnalysis.cpp -o ObjectFiles/FrontEnd/SyntaxAnalysis.o
+#~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+
+
+
+ObjectFiles/Instruments.o: Instruments/Instruments.cpp Instruments/Instruments.h
+	@ g++ $(FLAGS) $(MODE) -c Instruments/Instruments.cpp -o ObjectFiles/Instruments.o
+
 
 
 clean:
-	rm ObjectFiles/*.o front_end
+	rm ObjectFiles/FrontEnd/*.o   ObjectFiles/MiddleEnd/*.o  \
+	   ObjectFiles/BackEnd/*.o    ExecutableFiles/front_end  \
+	   ObjectFiles/*.o            ExecutableFiles/middle_end \
+	   ExecutableFiles/back_end

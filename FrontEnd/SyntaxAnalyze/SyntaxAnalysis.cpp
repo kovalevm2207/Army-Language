@@ -1,16 +1,7 @@
 #include "SyntaxAnalysis.h"
 
-#define TOKEN_TYPE lexical_analysis.data[token].type
-#define NUM_DATA   lexical_analysis.data[token].data.num
-#define NAME_NUM   lexical_analysis.data[token].data.name
-#define WORD_ENUM  lexical_analysis.data[token].data.word
 
-Node_t* GetBody(const stack_s lexical_analysis, size_t* token_ptr);
-Node_t* GetFunctions(const stack_s lexical_analysis, size_t* token_ptr);
-Node_t* GetMain(const stack_s lexical_analysis, size_t* token_ptr);
-Node_t* GetDescription(const stack_s lexical_analysis, size_t* token_ptr);
-
-Node_t* GetProgram(const stack_s lexical_analysis)
+Node_t* GetProgram(const Analyze_t lexical_analysis)
 {
     assert(lexical_analysis.data);
     size_t token = 1;
@@ -23,7 +14,7 @@ Node_t* GetProgram(const stack_s lexical_analysis)
 
     return root;
 }
-bool GetStart(const stack_s lexical_analysis, size_t* token_ptr)
+bool GetStart(const Analyze_t lexical_analysis, size_t* token_ptr)
 {
     assert(token_ptr);
     assert(lexical_analysis.data);
@@ -39,7 +30,7 @@ bool GetStart(const stack_s lexical_analysis, size_t* token_ptr)
 
     return true;
 }
-bool GetEnd(const stack_s lexical_analysis, size_t* token_ptr)
+bool GetEnd(const Analyze_t lexical_analysis, size_t* token_ptr)
 {
     assert(token_ptr);
     assert(lexical_analysis.data);
@@ -53,7 +44,7 @@ bool GetEnd(const stack_s lexical_analysis, size_t* token_ptr)
 
     return true;
 }
-Node_t* GetBody(const stack_s lexical_analysis, size_t* token_ptr)
+Node_t* GetBody(const Analyze_t lexical_analysis, size_t* token_ptr)
 {
     assert(token_ptr);
     assert(lexical_analysis.data);
@@ -88,7 +79,7 @@ Node_t* GetBody(const stack_s lexical_analysis, size_t* token_ptr)
 
     return body;
 }
-Node_t* GetFunctions(const stack_s lexical_analysis, size_t* token_ptr)
+Node_t* GetFunctions(const Analyze_t lexical_analysis, size_t* token_ptr)
 {
     assert(token_ptr);
     assert(lexical_analysis.data);
@@ -129,7 +120,7 @@ Node_t* GetFunctions(const stack_s lexical_analysis, size_t* token_ptr)
     *token_ptr = token;
     return func;
 }
-Node_t* GetMain(const stack_s lexical_analysis, size_t* token_ptr)
+Node_t* GetMain(const Analyze_t lexical_analysis, size_t* token_ptr)
 {
     assert(token_ptr);
     assert(lexical_analysis.data);
@@ -166,7 +157,7 @@ Node_t* GetMain(const stack_s lexical_analysis, size_t* token_ptr)
     *token_ptr = token;
     return func;
 }
-Node_t* GetDescription(const stack_s lexical_analysis, size_t* token_ptr)
+Node_t* GetDescription(const Analyze_t lexical_analysis, size_t* token_ptr)
 {
 
     assert(token_ptr);
@@ -189,35 +180,5 @@ Node_t* GetDescription(const stack_s lexical_analysis, size_t* token_ptr)
     token++;
 
     *token_ptr = token;
-    return description
+    return description;
 }
-
-
-/*
-Структура проекта:
-~~~~~~~~~~~~~~~~~~
-
-ArmyLanguage
-            \__ army-language-highlight
-            \__ FrontEnd
-                        \__ LexicalAnalyze
-                                          \__ StackMemStruct
-
-                        \__ SyntaxAnalyze
-                                         \__ TreeMemStruct
-                                         \__ StackMemStruct
-
-            \__ MiddleEnd
-                         \__ TreeMemStruct
-
-            \__ BackEnd
-                       \__ StackMemStruct
-
-            \__ ObjectFiles
-                           \__ FrontEnd
-                           \__ MiddleEnd
-                           \__ BackEnd
-
-            \__ ExecutableFiles
-            \__ Instruments
-*/
