@@ -153,7 +153,7 @@ StackErr_t print_data(stack_s* stk)
                 {
                     case NUM_TOKEN:  printf("%d\n" RESET, stk->data[i].data.num);                  break;
                     case VAR_TOKEN:  printf("%s\n" RESET, Vars[stk->data[i].data.name]);           break;
-                    case FUNC_TOKEN: printf("%s\n" RESET, Functions[stk->data[i].data.word]);      break;
+                    case FUNC_TOKEN: printf("%s\n" RESET, Functions[stk->data[i].data.name]);      break;
                     case START_TOKEN:
                     case HLT_TOKEN:
                     case KEY_WORD_TOKEN:

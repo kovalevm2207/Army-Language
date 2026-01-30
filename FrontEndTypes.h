@@ -56,8 +56,6 @@ typedef enum
     FUNC_NAME,
     //VAR_TOKENS:
     VAR_NAME,
-    //SERVICE TYPE
-    LINKER,
     //EMPTY_TOKENS:
     UNKNOWN
 } Word_t;
@@ -74,8 +72,7 @@ const char* const WordsTypesNames[]
     "IF", "WHILE", "PRINT", "IN", "RET",
     "FUNC_NAME",
     "VAR_NAME",
-    "UNKNOWN",
-    "LINKER"
+    "UNKNOWN"
 };
 
 typedef union

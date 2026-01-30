@@ -16,7 +16,7 @@ typedef struct Node_t
 {
     Node_t**    prev_node;
     NodeType_t       type;
-    NodeData_t       data;
+    TokenData_t      data;
     Node_t*          left;
     Node_t*         right;
 } Node_t;

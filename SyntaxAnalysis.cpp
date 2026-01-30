@@ -18,7 +18,7 @@ Node_t* GetProgram(const stack_s lexical_analysis)
 
     Node_t* root = GetBody(lexical_analysis, &token);
 
-    if(!GetEnd(lexical_analysis, &token)) DeleteTreeNode(&root);
+    if(!GetEnd(lexical_analysis, &token)) fprintf(stderr, "end missing\n");
 
     return root;
 }
@@ -57,78 +57,121 @@ Node_t* GetBody(const stack_s lexical_analysis, size_t* token_ptr)
     assert(token_ptr);
     assert(lexical_analysis.data);
 
+    Node_t* body = NULL;
     Node_t* sub_func = GetFunctions(lexical_analysis, token_ptr);
-    Node_t*   linker = TreeNodeCtor(OP, {.num = LINKER}, NULL, NULL);
-    Node_t*     body = linker;
+
+    if(sub_func) body = sub_func;
 
     while(sub_func)
     {
-        TreeInsertRight(linker, sub_func);
-        Node_t* new_linker = TreeNodeCtor(OP, {.num = LINKER}, NULL, NULL);
-        TreeInsertLeft(linker, new_linker);
-        linker = new_linker;
-        new_linker = NULL;
-        sub_func = GetFunctions(lexical_analysis, token_ptr);
+        Node_t* new_sub_func = GetFunctions(lexical_analysis, token_ptr);
+        TreeInsertLeft(sub_func, new_sub_func);
+        if(new_sub_func) sub_func = new_sub_func;
+        else break;
     }
 
     Node_t* main_func = GetMain(lexical_analysis, token_ptr);
 
-    if(!main_func)
+    if(main_func == NULL)
     {
         fprintf(stderr, RED_COLOR "main func skipped\n" RESET);
         return body;
     }
-    if(linker->prev_node)
-        TreeInsertLeft(*(linker->prev_node), main_func);
-    else
-        body = main_func;
 
-    //DeleteTreeNode(&linker);
+    if(sub_func && body)
+        TreeInsertLeft(sub_func, main_func);
+    else if(!sub_func && !body)
+        body = main_func;
+    else
+        fprintf(stderr, RED_COLOR "Logical err with sub_fun and body" RESET);
+
     return body;
 }
 Node_t* GetFunctions(const stack_s lexical_analysis, size_t* token_ptr)
 {
     assert(token_ptr);
     assert(lexical_analysis.data);
-    Node_t* func = NULL;
 
+    Node_t* func = NULL;
     size_t token = *token_ptr;
-    fprintf(stderr, PURPLE_COLOR "%s: type = %s | data = %s\n" RESET, __func__, TokenTypesNames[TOKEN_TYPE], WordsTypesNames[WORD_ENUM]);
-    if(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == FUNC_DEC)
+
+    if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == FUNC_DEC)) return func;
+    token++;
+
+    if(!(TOKEN_TYPE == FUNC_TOKEN && NAME_NUM != 0))             return func;
+    func = TreeNodeCtor(FUNC, {.name = NAME_NUM}, NULL, NULL);
+    token++;
+
+    if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == L_RND))    return func;
+    Node_t* func_vars = TreeNodeCtor(OP, {.word = L_RND}, NULL, NULL);
+    TreeInsertRight(func, func_vars);
+    token++;
+
+    while(TOKEN_TYPE == VAR_TOKEN)
     {
-        fprintf(stderr, GREEN_COLOR "%s: func dec founded\n" RESET, __func__);
+        TreeInsertRight(func_vars, TreeNodeCtor(VAR, {.name = NAME_NUM}, NULL, NULL));
+        func_vars = func_vars->right;
         token++;
-        if(TOKEN_TYPE == FUNC_TOKEN     && NAME_NUM != 0)
-        {
-            fprintf(stderr, GREEN_COLOR "%s: sub_func founded\n" RESET, __func__);
-            func = TreeNodeCtor(FUNC, {.name = NAME_NUM}, NULL, NULL);
-            token++;
-            *token_ptr = token;
-        }
     }
 
+    if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == R_RND))    return func;
+    TreeInsertRight(func_vars, TreeNodeCtor(OP, {.word = R_RND}, NULL, NULL));
+    func_vars = func_vars->right;
+    token++;
+
+    if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == L_FIG))    return func;
+    TreeInsertRight(func_vars, TreeNodeCtor(OP, {.word = L_FIG}, NULL, NULL));
+    func_vars = func_vars->right;
+    token++;
+
+    if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == R_FIG))    return func;
+    TreeInsertRight(func_vars, TreeNodeCtor(OP, {.word = R_FIG}, NULL, NULL));
+    token++;
+
+    *token_ptr = token;
     return func;
 }
 Node_t* GetMain(const stack_s lexical_analysis, size_t* token_ptr)
 {
     assert(token_ptr);
     assert(lexical_analysis.data);
-    Node_t* func = NULL;
 
+    Node_t* func = NULL;
     size_t token = *token_ptr;
-    fprintf(stderr, PURPLE_COLOR "%s: type = %s | data = %s\n" RESET, __func__, TokenTypesNames[TOKEN_TYPE], WordsTypesNames[WORD_ENUM]);
-    if(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == FUNC_DEC)
+
+    if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == FUNC_DEC)) return func;
+    token++;
+
+    if(!(TOKEN_TYPE == FUNC_TOKEN && NAME_NUM == 0))             return func;
+    func = TreeNodeCtor(FUNC, {.name = NAME_NUM}, NULL, NULL);
+    token++;
+
+    if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == L_RND))    return func;
+    Node_t* func_vars = TreeNodeCtor(OP, {.word = L_RND}, NULL, NULL);
+    TreeInsertRight(func, func_vars);
+    token++;
+
+    while(TOKEN_TYPE == VAR_TOKEN)
     {
-        fprintf(stderr, GREEN_COLOR "%s: func dec founded\n" RESET, __func__);
+        TreeInsertRight(func_vars, TreeNodeCtor(VAR, {.name = NAME_NUM}, NULL, NULL));
+        func_vars = func_vars->right;
         token++;
-        if(TOKEN_TYPE == FUNC_TOKEN     && NAME_NUM == 0)
-        {
-            fprintf(stderr, GREEN_COLOR "%s: main_func founded\n" RESET, __func__);
-            func = TreeNodeCtor(FUNC, {.name = NAME_NUM}, NULL, NULL);
-            token++;
-        }
-        *token_ptr = token;
     }
 
+    if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == R_RND))    return func;
+    TreeInsertRight(func_vars, TreeNodeCtor(OP, {.word = R_RND}, NULL, NULL));
+    func_vars = func_vars->right;
+    token++;
+
+    if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == L_FIG))    return func;
+    TreeInsertRight(func_vars, TreeNodeCtor(OP, {.word = L_FIG}, NULL, NULL));
+    func_vars = func_vars->right;
+    token++;
+
+    if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == R_FIG))    return func;
+    TreeInsertRight(func_vars, TreeNodeCtor(OP, {.word = R_FIG}, NULL, NULL));
+    token++;
+
+    *token_ptr = token;
     return func;
 }

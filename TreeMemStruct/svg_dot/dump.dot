@@ -6,37 +6,100 @@ digraph DUMP
     edge [style="bold", arrowhead="normal", splines=line, dir=normal]
     node0 [shape=plaintext, label=<
         <TABLE BORDER="0" CELLBORDER="2" CELLSPACING="3" CELLPADDING="3" BGCOLOR="#0bdfeeff" FIXEDSIZE="FALSE" ALIGN="CENTER" VALIGN="MIDDLE" SIDES="LRTB" >
-            <TR><TD PORT="p" BGCOLOR="#ffaa00" COLSPAN="2" COLOR="#000000">0x504000000190</TD></TR>
-            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = OP</TD></TR>
-            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  UNKNOWN </TD></TR>
-            <TR><TD PORT="l" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#44ff00">0x5040000001d0</TD><TD PORT="r" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#ff0066">0x504000000150</TD></TR>
+            <TR><TD PORT="p" BGCOLOR="#eeff00" COLSPAN="2" COLOR="#000000">0x504000000310</TD></TR>
+            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = FUNC</TD></TR>
+            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  НайтиШпиона </TD></TR>
+            <TR><TD PORT="l" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#88ff00">0x504000000490</TD><TD PORT="r" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#00ff22">0x504000000350</TD></TR>
         </TABLE>
     >];
     node1 [shape=plaintext, label=<
         <TABLE BORDER="0" CELLBORDER="2" CELLSPACING="3" CELLPADDING="3" BGCOLOR="#0bdfeeff" FIXEDSIZE="FALSE" ALIGN="CENTER" VALIGN="MIDDLE" SIDES="LRTB" >
-            <TR><TD PORT="p" BGCOLOR="#44ff00" COLSPAN="2" COLOR="#000000">0x5040000001d0</TD></TR>
-            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = OP</TD></TR>
-            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  UNKNOWN </TD></TR>
-            <TR><TD PORT="l" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#00ffcc">0x504000000210</TD><TD PORT="r" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD></TR>
+            <TR><TD PORT="p" BGCOLOR="#88ff00" COLSPAN="2" COLOR="#000000">0x504000000490</TD></TR>
+            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = FUNC</TD></TR>
+            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  ВыполнитьПриказГенерала </TD></TR>
+            <TR><TD PORT="l" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD><TD PORT="r" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#00ff88">0x5040000004d0</TD></TR>
         </TABLE>
     >];
     node2 [shape=plaintext, label=<
         <TABLE BORDER="0" CELLBORDER="2" CELLSPACING="3" CELLPADDING="3" BGCOLOR="#0bdfeeff" FIXEDSIZE="FALSE" ALIGN="CENTER" VALIGN="MIDDLE" SIDES="LRTB" >
-            <TR><TD PORT="p" BGCOLOR="#00ffcc" COLSPAN="2" COLOR="#000000">0x504000000210</TD></TR>
-            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = FUNC</TD></TR>
-            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  ВыполнитьПриказГенерала </TD></TR>
-            <TR><TD PORT="l" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD><TD PORT="r" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD></TR>
+            <TR><TD PORT="p" BGCOLOR="#00ff88" COLSPAN="2" COLOR="#000000">0x5040000004d0</TD></TR>
+            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = OP</TD></TR>
+            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  L_RND </TD></TR>
+            <TR><TD PORT="l" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD><TD PORT="r" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#0066ff">0x504000000510</TD></TR>
         </TABLE>
     >];
     node3 [shape=plaintext, label=<
         <TABLE BORDER="0" CELLBORDER="2" CELLSPACING="3" CELLPADDING="3" BGCOLOR="#0bdfeeff" FIXEDSIZE="FALSE" ALIGN="CENTER" VALIGN="MIDDLE" SIDES="LRTB" >
-            <TR><TD PORT="p" BGCOLOR="#ff0066" COLSPAN="2" COLOR="#000000">0x504000000150</TD></TR>
-            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = FUNC</TD></TR>
-            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  НайтиШпиона </TD></TR>
+            <TR><TD PORT="p" BGCOLOR="#0066ff" COLSPAN="2" COLOR="#000000">0x504000000510</TD></TR>
+            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = OP</TD></TR>
+            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  R_RND </TD></TR>
+            <TR><TD PORT="l" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD><TD PORT="r" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#aa00ff">0x504000000550</TD></TR>
+        </TABLE>
+    >];
+    node4 [shape=plaintext, label=<
+        <TABLE BORDER="0" CELLBORDER="2" CELLSPACING="3" CELLPADDING="3" BGCOLOR="#0bdfeeff" FIXEDSIZE="FALSE" ALIGN="CENTER" VALIGN="MIDDLE" SIDES="LRTB" >
+            <TR><TD PORT="p" BGCOLOR="#aa00ff" COLSPAN="2" COLOR="#000000">0x504000000550</TD></TR>
+            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = OP</TD></TR>
+            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  L_FIG </TD></TR>
+            <TR><TD PORT="l" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD><TD PORT="r" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#ff0044">0x504000000590</TD></TR>
+        </TABLE>
+    >];
+    node5 [shape=plaintext, label=<
+        <TABLE BORDER="0" CELLBORDER="2" CELLSPACING="3" CELLPADDING="3" BGCOLOR="#0bdfeeff" FIXEDSIZE="FALSE" ALIGN="CENTER" VALIGN="MIDDLE" SIDES="LRTB" >
+            <TR><TD PORT="p" BGCOLOR="#ff0044" COLSPAN="2" COLOR="#000000">0x504000000590</TD></TR>
+            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = OP</TD></TR>
+            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  R_FIG </TD></TR>
+            <TR><TD PORT="l" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD><TD PORT="r" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD></TR>
+        </TABLE>
+    >];
+    node6 [shape=plaintext, label=<
+        <TABLE BORDER="0" CELLBORDER="2" CELLSPACING="3" CELLPADDING="3" BGCOLOR="#0bdfeeff" FIXEDSIZE="FALSE" ALIGN="CENTER" VALIGN="MIDDLE" SIDES="LRTB" >
+            <TR><TD PORT="p" BGCOLOR="#00ff22" COLSPAN="2" COLOR="#000000">0x504000000350</TD></TR>
+            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = OP</TD></TR>
+            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  L_RND </TD></TR>
+            <TR><TD PORT="l" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD><TD PORT="r" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#00ccff">0x504000000390</TD></TR>
+        </TABLE>
+    >];
+    node7 [shape=plaintext, label=<
+        <TABLE BORDER="0" CELLBORDER="2" CELLSPACING="3" CELLPADDING="3" BGCOLOR="#0bdfeeff" FIXEDSIZE="FALSE" ALIGN="CENTER" VALIGN="MIDDLE" SIDES="LRTB" >
+            <TR><TD PORT="p" BGCOLOR="#00ccff" COLSPAN="2" COLOR="#000000">0x504000000390</TD></TR>
+            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = VAR</TD></TR>
+            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  ПозицияВрага </TD></TR>
+            <TR><TD PORT="l" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD><TD PORT="r" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#4400ff">0x5040000003d0</TD></TR>
+        </TABLE>
+    >];
+    node8 [shape=plaintext, label=<
+        <TABLE BORDER="0" CELLBORDER="2" CELLSPACING="3" CELLPADDING="3" BGCOLOR="#0bdfeeff" FIXEDSIZE="FALSE" ALIGN="CENTER" VALIGN="MIDDLE" SIDES="LRTB" >
+            <TR><TD PORT="p" BGCOLOR="#4400ff" COLSPAN="2" COLOR="#000000">0x5040000003d0</TD></TR>
+            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = OP</TD></TR>
+            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  R_RND </TD></TR>
+            <TR><TD PORT="l" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD><TD PORT="r" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#ff00aa">0x504000000410</TD></TR>
+        </TABLE>
+    >];
+    node9 [shape=plaintext, label=<
+        <TABLE BORDER="0" CELLBORDER="2" CELLSPACING="3" CELLPADDING="3" BGCOLOR="#0bdfeeff" FIXEDSIZE="FALSE" ALIGN="CENTER" VALIGN="MIDDLE" SIDES="LRTB" >
+            <TR><TD PORT="p" BGCOLOR="#ff00aa" COLSPAN="2" COLOR="#000000">0x504000000410</TD></TR>
+            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = OP</TD></TR>
+            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  L_FIG </TD></TR>
+            <TR><TD PORT="l" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD><TD PORT="r" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#ff6600">0x504000000450</TD></TR>
+        </TABLE>
+    >];
+    node10 [shape=plaintext, label=<
+        <TABLE BORDER="0" CELLBORDER="2" CELLSPACING="3" CELLPADDING="3" BGCOLOR="#0bdfeeff" FIXEDSIZE="FALSE" ALIGN="CENTER" VALIGN="MIDDLE" SIDES="LRTB" >
+            <TR><TD PORT="p" BGCOLOR="#ff6600" COLSPAN="2" COLOR="#000000">0x504000000450</TD></TR>
+            <TR><TD PORT="t" BGCOLOR="#B0E0B0ff" COLSPAN="2" COLOR="#000000ff">type = OP</TD></TR>
+            <TR><TD PORT="v" BGCOLOR="#c5a1e6ff" COLSPAN="2" COLOR="#000000">value =  R_FIG </TD></TR>
             <TR><TD PORT="l" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD><TD PORT="r" COLSPAN="1" ALIGN="CENTER" COLOR="#000000" BGCOLOR="#cccccc">0x000000000000</TD></TR>
         </TABLE>
     >];
     node0:<l>:s -> node1:n [dir=normal, color="#4d00a6ff"];
-    node1:<l>:s -> node2:n [dir=normal, color="#4d00a6ff"];
-    node0:<r>:s -> node3:n [dir=normal, color="#4d00a6ff"];
+    node1:<r>:s -> node2:n [dir=normal, color="#4d00a6ff"];
+    node2:<r>:s -> node3:n [dir=normal, color="#4d00a6ff"];
+    node3:<r>:s -> node4:n [dir=normal, color="#4d00a6ff"];
+    node4:<r>:s -> node5:n [dir=normal, color="#4d00a6ff"];
+    node0:<r>:s -> node6:n [dir=normal, color="#4d00a6ff"];
+    node6:<r>:s -> node7:n [dir=normal, color="#4d00a6ff"];
+    node7:<r>:s -> node8:n [dir=normal, color="#4d00a6ff"];
+    node8:<r>:s -> node9:n [dir=normal, color="#4d00a6ff"];
+    node9:<r>:s -> node10:n [dir=normal, color="#4d00a6ff"];
 }
