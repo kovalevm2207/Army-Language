@@ -157,9 +157,12 @@ Node_t* GetMain(const Analyze_t lexical_analysis, size_t* token_ptr)
     *token_ptr = token;
     return func;
 }
+
+Node_t* (*const SyntaxAnalyzeFunc[])(const Analyze_t, size_t*) = {GetVarDeclaration};
+const size_t SYNTAX_ANALYZE_FUNC_NUM = sizeof(SyntaxAnalyzeFunc)/sizeof(SyntaxAnalyzeFunc[0]);
+
 Node_t* GetDescription(const Analyze_t lexical_analysis, size_t* token_ptr)
 {
-
     assert(token_ptr);
     assert(lexical_analysis.data);
 
@@ -169,16 +172,55 @@ Node_t* GetDescription(const Analyze_t lexical_analysis, size_t* token_ptr)
     if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == L_FIG))    return description;
     token++;
 
+    Node_t** cur_node = &description;
     Node_t* statement = NULL;
 
     do
     {
-
+        for(size_t cur_func = 0; cur_func < SYNTAX_ANALYZE_FUNC_NUM && !statement; cur_func++)
+        {
+            statement = (*SyntaxAnalyzeFunc)[cur_func];
+        }
+        if(statement)
+        {
+            TreeInsertLeft (*cur_node, statement);
+            TreeInsertRight(*cur_node, NULL, TreeNodeCtor(OP, {.word = END}, NULL, NULL));
+            cur_node = &((*cur_node)->right);
+        }
     } while(statement);
+    MakePrevNode(description);
 
     if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == R_FIG))    return description;
     token++;
 
     *token_ptr = token;
     return description;
+}
+Node_t* GetVarDeclaration(const Analyze_t lexical_analysis, size_t* token_ptr/*, stack with Context*/)
+{
+    assert(token_ptr);
+    assert(lexical_analysis.data);
+
+    size_t token = *token_ptr;
+
+    if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == BEGING))           return NULL;
+    token++;
+
+    if(!GetContext(lexical_analysis, &token/*, stack with Context*/))    return NULL;
+
+    if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == VAR_DEC))          return NULL;
+    token++;
+
+    if(TOKEN_TYPE != VAR_TOKEN)                                          return NULL;
+    size_t var_name = NAME_NUM;
+    token++;
+
+    if(!(TOKEN_TYPE == KEY_WORD_TOKEN && WORD_ENUM == AST))              return NULL;
+    token++;
+
+    Node_t var_data = GetExpression(lexical_analysis, &token/*, stack with Context*/);
+    if(!var_data)                                                        return NULL;
+
+    *token_ptr = token;
+    return TreeNodeCtor(OP, {.word = AST}, TreeNodeCtor(VAR, {.name = var_name}, NULL, NULL), var_data);
 }

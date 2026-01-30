@@ -25,5 +25,6 @@ Node_t* GetBody(const Analyze_t lexical_analysis, size_t* token_ptr);
 Node_t* GetFunctions(const Analyze_t lexical_analysis, size_t* token_ptr);
 Node_t* GetMain(const Analyze_t lexical_analysis, size_t* token_ptr);
 Node_t* GetDescription(const Analyze_t lexical_analysis, size_t* token_ptr);
+Node_t* GetVarDeclaration(const Analyze_t lexical_analysis, size_t* token_ptr);
 
 #endif//ARMY_LANGUAGE_SYNTAX_ANALYSIS
