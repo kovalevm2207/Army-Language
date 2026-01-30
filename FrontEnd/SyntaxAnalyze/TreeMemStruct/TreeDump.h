@@ -7,7 +7,7 @@
 #include "TreeBase.h"
 #include "Tree.h"
 
-const int MAX_FILE_NAME = 100;
+const int MAX_FILE_NAME = 500;
 
 FILE* StartHTMLfile(void);
 TreeErr_t CreateDotFile(const Node_t* node);

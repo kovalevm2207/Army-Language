@@ -278,9 +278,9 @@ TreeErr_t TreeDump_(const Node_t* node, int count_img, const char* func, const c
 
     CreateDotFile(node);
     char command[MAX_FILE_NAME] = {};
-    sprintf(command, "dot -Tsvg TreeMemStruct/svg_dot/dump.dot -o TreeMemStruct/svg_dot/%ddump.svg", count_img);
+    sprintf(command, "dot -Tsvg FrontEnd/SyntaxAnalyze/TreeMemStruct/dump.dot -o FrontEnd/SyntaxAnalyze/TreeMemStruct/svg_dot/%ddump.svg", count_img);
     system(command);
-    sprintf(command, "dot -Tpdf TreeMemStruct/svg_dot/dump.dot -o TreeMemStruct/pdf_dot/%ddump.pdf", count_img);
+    sprintf(command, "dot -Tpdf FrontEnd/SyntaxAnalyze/TreeMemStruct/dump.dot -o FrontEnd/SyntaxAnalyze/TreeMemStruct/pdf_dot/%ddump.pdf", count_img);
     system(command);
 
     WriteInHtmlFile(node, count_img, func, file, line);

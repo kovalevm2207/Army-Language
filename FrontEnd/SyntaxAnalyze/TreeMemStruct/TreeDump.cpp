@@ -3,8 +3,12 @@
 
 FILE* StartHTMLfile(void)
 {
-    FILE* dump_file = fopen("dump.html", "w");
-    if(dump_file == NULL) return NULL;
+    FILE* dump_file = fopen("FrontEnd/dump.html", "w");
+    if(dump_file == NULL)
+    {
+        fprintf(stderr, RED_COLOR "open HTML file err\n" RESET);
+        return NULL;
+    }
 
     time_t now = time(NULL);
     struct tm *time_info = localtime(&now);
@@ -32,8 +36,8 @@ TreeErr_t CreateDotFile(const Node_t* node)
 {
     assert(node != NULL);
 
-    FILE* dump_file = fopen("TreeMemStruct/svg_dot/dump.dot", "w");
-    assert(dump_file != NULL);
+    FILE* dump_file = fopen("FrontEnd/SyntaxAnalyze/TreeMemStruct/dump.dot", "w");
+    assert(dump_file != NULL && "open .dot file err");
 
     fprintf(dump_file, "digraph DUMP\n"
                        "{\n"
@@ -198,11 +202,11 @@ TreeErr_t WriteInHtmlFile(const Node_t* node, int count_img, const char* func, c
     assert(func != NULL);
     assert(file != NULL);
 
-    FILE* dump_file = fopen("dump.html", "a");
+    FILE* dump_file = fopen("FrontEnd/dump.html", "a");
     CHECK_PTR(dump_file, FILE);
 
     fprintf(dump_file, "<pre><b>TreeDump from %s at %s:%d\n", func, file, line);
-    fprintf(dump_file, "    <img src=\"TreeMemStruct/svg_dot/%ddump.svg\">\n", count_img);
+    fprintf(dump_file, "    <img src=\"SyntaxAnalyze/TreeMemStruct/svg_dot/%ddump.svg\">\n", count_img);
 
     fclose(dump_file);
 
@@ -210,7 +214,7 @@ TreeErr_t WriteInHtmlFile(const Node_t* node, int count_img, const char* func, c
 }
 int EndHTMLfile(void)
 {
-    FILE* dump_file = fopen("dump.html", "a");
+    FILE* dump_file = fopen("FrontEnd/dump.html", "a");
 
     fprintf(dump_file, "</body>\n"
                        "</html>\n");
